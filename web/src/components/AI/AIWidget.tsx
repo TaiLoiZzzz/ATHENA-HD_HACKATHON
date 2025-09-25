@@ -75,7 +75,7 @@ const AIWidget: React.FC<AIWidgetProps> = ({ className = '' }) => {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold">AI Assistant</h3>
-                  <p className="text-sm text-purple-100">Tư vấn thông minh</p>
+                  <p className="text-sm text-purple-100">Smart consultation</p>
                 </div>
               </div>
               <button
@@ -100,13 +100,13 @@ const AIWidget: React.FC<AIWidgetProps> = ({ className = '' }) => {
                   AI Personalization
                 </h4>
                 <p className="text-sm text-gray-600 mb-4">
-                  Tôi có thể giúp bạn tối ưu hóa token và đưa ra lời khuyên cá nhân hóa
+                  I can help you optimize tokens and provide personalized recommendations
                 </p>
                 <button
                   onClick={() => setShowSalesAssistant(true)}
                   className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-200 flex items-center space-x-2 mx-auto"
                 >
-                  <span>Bắt đầu trò chuyện</span>
+                  <span>Start conversation</span>
                   <ArrowRightIcon className="w-4 h-4" />
                 </button>
               </div>

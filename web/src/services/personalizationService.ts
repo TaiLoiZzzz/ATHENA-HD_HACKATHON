@@ -20,7 +20,7 @@ export interface UserPreferences {
 
 export interface Recommendation {
   id: string;
-  type: 'flight' | 'banking' | 'resort' | 'insurance';
+  type: 'flight' | 'banking' | 'resort' | 'insurance' | 'marketplace';
   title: string;
   description: string;
   price?: number;

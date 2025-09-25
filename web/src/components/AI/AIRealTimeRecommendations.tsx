@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   CpuChipIcon,
   SparklesIcon,
-  TrendingUpIcon,
+  ArrowTrendingUpIcon,
   FireIcon,
   StarIcon,
   GiftIcon,
@@ -16,7 +16,7 @@ import {
   TrophyIcon,
   BoltIcon,
   EyeIcon,
-  RefreshIcon
+  ArrowPathIcon
 } from '@heroicons/react/24/outline';
 import { aiPersonalizationService } from '@/services/aiPersonalizationService';
 import { sovTokenService } from '@/services/sovTokenService';
@@ -176,7 +176,7 @@ const AIRealTimeRecommendations: React.FC<AIRealTimeRecommendationsProps> = ({
             disabled={loading}
             className="p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
           >
-            <RefreshIcon className={`w-5 h-5 text-gray-600 ${loading ? 'animate-spin' : ''}`} />
+            <ArrowPathIcon className={`w-5 h-5 text-gray-600 ${loading ? 'animate-spin' : ''}`} />
           </button>
           <div className="flex items-center space-x-2">
             <SparklesIcon className="w-5 h-5 text-purple-500" />
@@ -264,7 +264,7 @@ const AIRealTimeRecommendations: React.FC<AIRealTimeRecommendationsProps> = ({
                         </span>
                       </div>
                       <div className="flex items-center space-x-1">
-                        <TrendingUpIcon className="w-4 h-4 text-blue-600" />
+                        <ArrowTrendingUpIcon className="w-4 h-4 text-blue-600" />
                         <span className="text-sm font-medium text-blue-600">
                           ROI: {Math.round((rec.roi || 0) * 100)}%
                         </span>

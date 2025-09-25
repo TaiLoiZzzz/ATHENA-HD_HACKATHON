@@ -33,9 +33,7 @@ const navigation = [
   { name: 'Banking', href: '/hdbank', icon: CurrencyDollarIcon },
   { name: 'Vikkibank', href: '/vikkibank', icon: BuildingStorefrontIcon },
   { name: 'Sovico', href: '/sovico', icon: SparklesIcon },
-  { name: 'Web3', href: '/web3', icon: SparklesIcon },
   { name: 'AI Dashboard', href: '/ai-dashboard', icon: SparklesIcon },
-  { name: 'AI Test', href: '/ai-test', icon: SparklesIcon },
 ];
 
 // User menu items

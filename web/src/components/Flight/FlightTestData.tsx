@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  AirplaneIcon,
+  PaperAirplaneIcon,
   ClockIcon,
   CurrencyDollarIcon,
   MapPinIcon,
@@ -187,7 +187,7 @@ const FlightTestData: React.FC<FlightTestDataProps> = ({
                 <div className="flex-1">
                   <div className="flex items-center space-x-4 mb-4">
                     <div className="flex items-center space-x-2">
-                      <AirplaneIcon className="w-5 h-5 text-blue-600" />
+                      <PaperAirplaneIcon className="w-5 h-5 text-blue-600" />
                       <span className="font-semibold text-gray-900">{flight.flightNumber}</span>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -226,7 +226,7 @@ const FlightTestData: React.FC<FlightTestDataProps> = ({
                         <span className="text-sm text-gray-600">{formatDate(flight.departure.date)}</span>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <AirplaneIcon className="w-4 h-4 text-gray-500" />
+                        <PaperAirplaneIcon className="w-4 h-4 text-gray-500" />
                         <span className="text-sm text-gray-600">{flight.aircraft}</span>
                       </div>
                       <div className="flex items-center space-x-2">

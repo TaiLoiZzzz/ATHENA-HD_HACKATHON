@@ -299,7 +299,7 @@ const VikkibankDashboard: React.FC<VikkibankDashboardProps> = ({ className = '' 
               <div className="space-y-2 mb-4">
                 <h4 className="text-sm font-medium text-gray-900">Tính năng:</h4>
                 <div className="flex flex-wrap gap-1">
-                  {product.features.slice(0, 3).map((feature, idx) => (
+                  {product.features.slice(0, 3).map((feature: string, idx: number) => (
                     <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
                       {feature}
                     </span>
@@ -360,7 +360,7 @@ const VikkibankDashboard: React.FC<VikkibankDashboardProps> = ({ className = '' 
               <div className="space-y-2 mb-4">
                 <h4 className="text-sm font-medium text-gray-900">Tính năng:</h4>
                 <div className="flex flex-wrap gap-1">
-                  {service.features.map((feature, idx) => (
+                  {service.features.map((feature: string, idx: number) => (
                     <span key={idx} className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
                       {feature}
                     </span>

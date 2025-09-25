@@ -148,7 +148,7 @@ const AIPersonalization: React.FC<AIPersonalizationProps> = ({ className = '' })
           </div>
           <div>
             <h3 className="text-lg font-semibold text-gray-900">AI Personalization</h3>
-            <p className="text-sm text-gray-600">Đang phân tích dữ liệu...</p>
+            <p className="text-sm text-gray-600">Analyzing data...</p>
           </div>
         </div>
         <div className="animate-pulse space-y-3">
@@ -171,7 +171,7 @@ const AIPersonalization: React.FC<AIPersonalizationProps> = ({ className = '' })
           <div>
             <h3 className="text-xl font-bold text-gray-900">AI Personalization</h3>
             <p className="text-sm text-gray-600">
-              Lời khuyên tối ưu cho rank {userProfile?.rank} của bạn
+              Optimized recommendations for your {userProfile?.rank} rank
             </p>
           </div>
         </div>
@@ -185,11 +185,11 @@ const AIPersonalization: React.FC<AIPersonalizationProps> = ({ className = '' })
       <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 mb-6">
         <div className="flex items-center space-x-2 mb-2">
           <CpuChipIcon className="w-5 h-5 text-purple-600" />
-          <span className="font-semibold text-gray-900">Phân tích AI</span>
+          <span className="font-semibold text-gray-900">AI Analysis</span>
         </div>
         <p className="text-sm text-gray-700">
-          Dựa trên rank {userProfile?.rank}, lịch sử giao dịch và tin tức hiện tại, 
-          AI đã chọn {recommendations.length} sản phẩm tối ưu nhất cho bạn.
+          Based on your {userProfile?.rank} rank, transaction history and current news, 
+          AI has selected {recommendations.length} optimal products for you.
         </p>
       </div>
 
@@ -234,7 +234,7 @@ const AIPersonalization: React.FC<AIPersonalizationProps> = ({ className = '' })
                     <div className="flex items-start space-x-2">
                       <CpuChipIcon className="w-4 h-4 text-blue-600 mt-0.5" />
                       <div>
-                        <p className="text-sm font-medium text-blue-900">Lý do AI khuyên:</p>
+                        <p className="text-sm font-medium text-blue-900">AI reasoning:</p>
                         <p className="text-sm text-blue-800">{rec.reason}</p>
                       </div>
                     </div>
@@ -273,7 +273,7 @@ const AIPersonalization: React.FC<AIPersonalizationProps> = ({ className = '' })
                     <div className="flex items-start space-x-2">
                       <GiftIcon className="w-4 h-4 text-green-600 mt-0.5" />
                       <div>
-                        <p className="text-sm font-medium text-green-900">Lời khuyên cá nhân:</p>
+                        <p className="text-sm font-medium text-green-900">Personal recommendation:</p>
                         <p className="text-sm text-green-800">{rec.personalizedMessage}</p>
                       </div>
                     </div>
@@ -296,11 +296,11 @@ const AIPersonalization: React.FC<AIPersonalizationProps> = ({ className = '' })
                     <div className="flex items-center space-x-2">
                       <TrophyIcon className="w-4 h-4 text-yellow-500" />
                       <span className="text-sm text-gray-600">
-                        Tối ưu cho rank {userProfile?.rank}
+                        Optimized for {userProfile?.rank} rank
                       </span>
                     </div>
                     <button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-200 flex items-center space-x-2">
-                      <span>Xem chi tiết</span>
+                      <span>View details</span>
                       <ArrowRightIcon className="w-4 h-4" />
                     </button>
                   </div>
@@ -318,9 +318,9 @@ const AIPersonalization: React.FC<AIPersonalizationProps> = ({ className = '' })
             <span className="font-semibold text-gray-900">AI Insights</span>
           </div>
         <p className="text-sm text-gray-700">
-          Dựa trên phân tích, bạn có thể tối ưu hóa token bằng cách tập trung vào các dịch vụ 
-          phù hợp với rank {userProfile?.rank} và sở thích cá nhân. AI khuyên bạn nên ưu tiên 
-          các sản phẩm có ROI cao và phù hợp với xu hướng hiện tại.
+          Based on analysis, you can optimize tokens by focusing on services 
+          suitable for your {userProfile?.rank} rank and personal preferences. AI recommends prioritizing 
+          products with high ROI and suitable for current trends.
         </p>
       </div>
     </div>

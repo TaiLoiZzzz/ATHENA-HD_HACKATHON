@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import {
   CpuChipIcon,
   SparklesIcon,
-  TrendingUpIcon,
+  ArrowTrendingUpIcon,
   FireIcon,
   StarIcon,
   GiftIcon,
@@ -66,7 +66,7 @@ const AIInsights: React.FC<AIInsightsProps> = ({ className = '', compact = false
           urgency: 'high',
           impact: 'positive',
           tokens: 500,
-          icon: TrendingUpIcon,
+          icon: ArrowTrendingUpIcon,
           color: 'green'
         },
         {
@@ -255,7 +255,7 @@ const AIInsights: React.FC<AIInsightsProps> = ({ className = '', compact = false
                       </span>
                     </div>
                     <div className="flex items-center space-x-1">
-                      <TrendingUpIcon className="w-4 h-4 text-blue-600" />
+                      <ArrowTrendingUpIcon className="w-4 h-4 text-blue-600" />
                       <span className="text-sm font-medium text-blue-600">
                         {insight.impact === 'positive' ? 'Tích cực' : 'Tiêu cực'}
                       </span>

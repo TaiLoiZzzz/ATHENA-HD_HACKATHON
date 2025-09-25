@@ -121,73 +121,73 @@ class AIPersonalizationService {
 
     const productsContext = availableProducts.map(product => 
       `- ID: ${product.id}
-       - Tên: ${product.name}
-       - Giá: ${product.price} VND
-       - Loại dịch vụ: ${product.serviceType}
-       - Danh mục: ${product.category}
+       - Name: ${product.name}
+       - Price: ${product.price} VND
+       - Service Type: ${product.serviceType}
+       - Category: ${product.category}
        - Token reward: ${product.tokenReward} SOV
-       - Giảm giá: ${product.discount || 0}%
-       - Tính năng: ${product.features.join(', ')}
-       - Mô tả: ${product.description}`
+       - Discount: ${product.discount || 0}%
+       - Features: ${product.features.join(', ')}
+       - Description: ${product.description}`
     ).join('\n\n');
 
     const transactionHistory = userProfile.transactionHistory?.slice(0, 5).map(tx => 
       `- ${tx.type}: ${tx.amount} SOV - ${tx.description} (${tx.serviceType})`
-    ).join('\n') || 'Chưa có lịch sử giao dịch';
+    ).join('\n') || 'No transaction history';
 
     return `
-Bạn là một AI Sales chuyên nghiệp cho hệ thống ATHENA-HD - một nền tảng blockchain tích hợp đa dịch vụ. Nhiệm vụ của bạn là phân tích sâu thông tin user và đưa ra lời khuyên mua sản phẩm tối ưu hóa token dựa trên dữ liệu thực tế.
+You are a professional AI Sales Assistant for the ATHENA-HD system - an integrated multi-service blockchain platform. Your task is to deeply analyze user information and provide product purchase recommendations to optimize tokens based on real data.
 
-=== THÔNG TIN USER CHI TIẾT ===
-- Rank hiện tại: ${userProfile.rank} (${userProfile.membershipTier})
-- Tổng điểm tích lũy: ${userProfile.totalPoints} points
-- Token đã kiếm được: ${userProfile.totalEarned} SOV
-- Token đã chi tiêu: ${userProfile.totalSpent} SOV  
-- Số dư hiện tại: ${userProfile.currentBalance} SOV
-- ATHENA Prime member: ${userProfile.isAthenaPrime ? 'Có' : 'Không'}
-- Sở thích cá nhân: ${userProfile.preferences.join(', ')}
-- Lịch sử giao dịch gần đây:
+=== DETAILED USER INFORMATION ===
+- Current Rank: ${userProfile.rank} (${userProfile.membershipTier})
+- Total accumulated points: ${userProfile.totalPoints} points
+- Tokens earned: ${userProfile.totalEarned} SOV
+- Tokens spent: ${userProfile.totalSpent} SOV  
+- Current balance: ${userProfile.currentBalance} SOV
+- ATHENA Prime member: ${userProfile.isAthenaPrime ? 'Yes' : 'No'}
+- Personal preferences: ${userProfile.preferences.join(', ')}
+- Recent transaction history:
 ${transactionHistory}
 
-=== TIN TỨC THỊ TRƯỜNG HIỆN TẠI ===
+=== CURRENT MARKET NEWS ===
 ${newsContext}
 
-=== DANH SÁCH SẢN PHẨM CÓ SẴN ===
+=== AVAILABLE PRODUCTS ===
 ${productsContext}
 
-=== NHIỆM VỤ AI SALES ===
-1. PHÂN TÍCH SÂU: Đọc kỹ thông tin user, rank, lịch sử giao dịch và sở thích
-2. PHÂN TÍCH THỊ TRƯỜNG: Xem xét tin tức hiện tại để đưa ra lời khuyên phù hợp với xu hướng
-3. TÍNH TOÁN TOKEN: Dựa trên rank ${userProfile.rank}, tính toán token reward và multiplier
-4. CHỌN LỌC: Chọn 3-5 sản phẩm tối ưu nhất cho user này
-5. CÁ NHÂN HÓA: Đưa ra lời khuyên cụ thể, thuyết phục và hữu ích
+=== AI SALES TASKS ===
+1. DEEP ANALYSIS: Read user information, rank, transaction history and preferences carefully
+2. MARKET ANALYSIS: Consider current news to provide recommendations that align with trends
+3. TOKEN CALCULATION: Based on rank ${userProfile.rank}, calculate token rewards and multipliers
+4. SELECTION: Choose 3-5 optimal products for this user
+5. PERSONALIZATION: Provide specific, persuasive and useful recommendations
 
-=== YÊU CẦU ĐẦU RA (JSON) ===
-Trả về JSON với format chính xác:
+=== OUTPUT REQUIREMENTS (JSON) ===
+Return JSON with exact format:
 {
   "recommendations": [
     {
       "productId": "string",
-      "reason": "Lý do cụ thể tại sao khuyên sản phẩm này cho user này",
-      "tokenOptimization": "Mô tả cách tối ưu hóa token với rank ${userProfile.rank}",
+      "reason": "Specific reason why you recommend this product for this user",
+      "tokenOptimization": "Description of how to optimize tokens with rank ${userProfile.rank}",
       "urgency": "low|medium|high",
       "confidence": 0.0-1.0,
-      "personalizedMessage": "Lời khuyên cá nhân hóa, thân thiện và thuyết phục",
+      "personalizedMessage": "Personalized, friendly and persuasive recommendation",
       "expectedTokens": number,
       "roi": number
     }
   ]
 }
 
-=== HƯỚNG DẪN SALES ===
-- Đóng vai một sales chuyên nghiệp, am hiểu về blockchain và tokenomics
-- Sử dụng ngôn ngữ thân thiện, chuyên nghiệp và thuyết phục
-- Phân tích cụ thể dựa trên rank ${userProfile.rank} và lịch sử của user
-- Đưa ra lời khuyên thực tế, có thể thực hiện được
-- Tính toán chính xác token reward dựa trên rank multiplier
-- Xem xét xu hướng thị trường từ tin tức để đưa ra lời khuyên phù hợp
+=== SALES GUIDELINES ===
+- Act as a professional salesperson, knowledgeable about blockchain and tokenomics
+- Use friendly, professional and persuasive language
+- Provide specific analysis based on rank ${userProfile.rank} and user history
+- Give practical, actionable recommendations
+- Calculate token rewards accurately based on rank multiplier
+- Consider market trends from news to provide appropriate recommendations
 
-Hãy phân tích kỹ và đưa ra lời khuyên tốt nhất cho user này!
+Please analyze carefully and provide the best recommendations for this user!
     `;
   }
 
@@ -263,11 +263,11 @@ Hãy phân tích kỹ và đưa ra lời khuyên tốt nhất cho user này!
       .slice(0, 3)
       .map(product => ({
         product,
-        reason: `Tối ưu cho rank ${userProfile.rank}`,
-        tokenOptimization: `Nhận ${product.tokenReward * tierMultiplier} SOV tokens`,
+        reason: `Optimized for rank ${userProfile.rank}`,
+        tokenOptimization: `Earn ${product.tokenReward * tierMultiplier} SOV tokens`,
         urgency: 'medium' as const,
         confidence: 0.7,
-        personalizedMessage: `Phù hợp với rank ${userProfile.rank} của bạn`,
+        personalizedMessage: `Perfect for your ${userProfile.rank} rank`,
         expectedTokens: product.tokenReward * tierMultiplier,
         roi: 0.12
       }));
@@ -292,36 +292,36 @@ Hãy phân tích kỹ và đưa ra lời khuyên tốt nhất cho user này!
       
       return [
         {
-          title: "VietJet Air mở rộng đường bay quốc tế, tăng cơ hội du lịch",
-          content: "VietJet Air vừa công bố mở thêm 5 đường bay quốc tế mới đến các điểm đến phổ biến như Singapore, Bangkok, Tokyo. Điều này tạo ra cơ hội lớn cho du lịch và kinh doanh, đặc biệt phù hợp với xu hướng du lịch hậu COVID-19. Các chuyến bay mới sẽ có giá ưu đãi đặc biệt cho khách hàng thân thiết.",
+          title: "VietJet Air expands international routes, increasing travel opportunities",
+          content: "VietJet Air has announced 5 new international routes to popular destinations like Singapore, Bangkok, Tokyo. This creates great opportunities for travel and business, especially suitable for post-COVID-19 travel trends. New flights will have special prices for loyal customers.",
           category: "travel",
           publishedAt: yesterday.toISOString(),
           relevance: 0.95
         },
         {
-          title: "HDBank ra mắt gói tài khoản premium với lãi suất cao",
-          content: "HDBank chính thức ra mắt gói tài khoản premium mới với lãi suất lên đến 8.5%/năm, cao hơn 2% so với thị trường. Gói này dành riêng cho khách hàng VIP với số dư tối thiểu 500 triệu VND. Khách hàng còn được hưởng nhiều ưu đãi đặc biệt như miễn phí chuyển khoản, ưu tiên giao dịch và tư vấn tài chính cá nhân.",
+          title: "HDBank launches premium account package with high interest rates",
+          content: "HDBank officially launches new premium account package with interest rates up to 8.5%/year, 2% higher than market. This package is exclusively for VIP customers with minimum balance of 500 million VND. Customers also enjoy many special benefits like free transfers, priority transactions and personal financial consulting.",
           category: "banking",
           publishedAt: yesterday.toISOString(),
           relevance: 0.88
         },
         {
-          title: "Sovico Resort khuyến mãi mùa hè với giá ưu đãi đặc biệt",
-          content: "Sovico Resort tung ra chương trình khuyến mãi mùa hè 'Summer Paradise 2024' với giá giảm đến 30% cho tất cả các gói nghỉ dưỡng. Chương trình bao gồm các hoạt động thể thao dưới nước, spa trị liệu và ẩm thực đặc sản. Đặc biệt, khách hàng đặt phòng trong tháng này sẽ được tặng kèm voucher ăn uống trị giá 500,000 VND.",
+          title: "Sovico Resort summer promotion with special discounted prices",
+          content: "Sovico Resort launches 'Summer Paradise 2024' promotion with up to 30% discount on all resort packages. The program includes water sports activities, spa treatments and specialty cuisine. Especially, customers booking this month will receive complimentary dining vouchers worth 500,000 VND.",
           category: "resort",
           publishedAt: yesterday.toISOString(),
           relevance: 0.82
         },
         {
-          title: "Thị trường blockchain Việt Nam tăng trưởng mạnh",
-          content: "Theo báo cáo mới nhất, thị trường blockchain và cryptocurrency tại Việt Nam đã tăng trưởng 45% trong quý 2/2024. Xu hướng này được thúc đẩy bởi việc chấp nhận thanh toán crypto rộng rãi hơn và các dự án DeFi mới. Nhiều doanh nghiệp lớn đã bắt đầu tích hợp blockchain vào hoạt động kinh doanh.",
+          title: "Vietnam blockchain market shows strong growth",
+          content: "According to the latest report, Vietnam's blockchain and cryptocurrency market has grown 45% in Q2 2024. This trend is driven by wider crypto payment adoption and new DeFi projects. Many large enterprises have started integrating blockchain into their business operations.",
           category: "blockchain",
           publishedAt: yesterday.toISOString(),
           relevance: 0.90
         },
         {
-          title: "Vikkibank ra mắt dịch vụ ngân hàng số thế hệ mới",
-          content: "Vikkibank vừa ra mắt nền tảng ngân hàng số thế hệ mới với AI và machine learning tích hợp. Hệ thống mới cho phép khách hàng quản lý tài chính thông minh hơn với các tính năng như dự đoán chi tiêu, tư vấn đầu tư tự động và bảo mật sinh trắc học nâng cao.",
+          title: "Vikkibank launches next-generation digital banking services",
+          content: "Vikkibank has launched a new generation digital banking platform with integrated AI and machine learning. The new system allows customers to manage finances more intelligently with features like spending prediction, automated investment advice and advanced biometric security.",
           category: "banking",
           publishedAt: yesterday.toISOString(),
           relevance: 0.85
@@ -332,8 +332,8 @@ Hãy phân tích kỹ và đưa ra lời khuyên tốt nhất cho user này!
       // Return basic fallback data
       return [
         {
-          title: "Thị trường tài chính ổn định",
-          content: "Thị trường tài chính trong nước và quốc tế đang có dấu hiệu ổn định tích cực",
+          title: "Financial market shows stability",
+          content: "Domestic and international financial markets are showing positive signs of stability",
           category: "finance",
           publishedAt: new Date().toISOString(),
           relevance: 0.7
@@ -347,25 +347,25 @@ Hãy phân tích kỹ và đưa ra lời khuyên tốt nhất cho user này!
     return [
       {
         id: "vietjet-flight-001",
-        name: "VietJet Air - Hà Nội đến TP.HCM (Khứ hồi)",
+        name: "VietJet Air - Hanoi to Ho Chi Minh City (Round trip)",
         price: 1500000,
         category: "flight",
         serviceType: "vietjet",
         tokenReward: 150,
         discount: 10,
         features: ["Baggage 20kg", "Meal service", "Priority boarding", "Free cancellation"],
-        description: "Chuyến bay nội địa khứ hồi với nhiều ưu đãi đặc biệt cho khách hàng thân thiết"
+        description: "Domestic round-trip flight with many special offers for loyal customers"
       },
       {
         id: "vietjet-flight-002",
-        name: "VietJet Air - Hà Nội đến Singapore",
+        name: "VietJet Air - Hanoi to Singapore",
         price: 3200000,
         category: "flight",
         serviceType: "vietjet",
         tokenReward: 320,
         discount: 15,
         features: ["International flight", "Baggage 30kg", "Meal service", "Entertainment"],
-        description: "Chuyến bay quốc tế đến Singapore với giá ưu đãi đặc biệt"
+        description: "International flight to Singapore with special discounted prices"
       },
       {
         id: "hdbank-premium-001",
@@ -374,8 +374,8 @@ Hãy phân tích kỹ và đưa ra lời khuyên tốt nhất cho user này!
         category: "banking",
         serviceType: "hdbank",
         tokenReward: 50,
-        features: ["Lãi suất 8.5%/năm", "Miễn phí chuyển khoản", "Ưu tiên giao dịch", "Tư vấn tài chính"],
-        description: "Tài khoản premium VIP với lãi suất cao và nhiều ưu đãi đặc biệt"
+        features: ["8.5% annual interest", "Free transfers", "Priority transactions", "Financial consulting"],
+        description: "VIP premium account with high interest rates and many special benefits"
       },
       {
         id: "hdbank-premium-002",
@@ -386,29 +386,29 @@ Hãy phân tích kỹ và đưa ra lời khuyên tốt nhất cho user này!
         tokenReward: 100,
         discount: 5,
         features: ["Business support", "High transaction limit", "Multi-currency", "24/7 support"],
-        description: "Tài khoản doanh nghiệp với hỗ trợ kinh doanh toàn diện"
+        description: "Business account with comprehensive business support"
       },
       {
         id: "sovico-resort-001",
-        name: "Sovico Resort - Phú Quốc (3 ngày 2 đêm)",
+        name: "Sovico Resort - Phu Quoc (3 days 2 nights)",
         price: 2500000,
         category: "resort",
         serviceType: "sovico",
         tokenReward: 250,
         discount: 15,
         features: ["Beach view room", "Spa service", "All inclusive", "Airport transfer"],
-        description: "Gói nghỉ dưỡng cao cấp tại Phú Quốc với view biển tuyệt đẹp"
+        description: "Premium resort package in Phu Quoc with beautiful sea view"
       },
       {
         id: "sovico-resort-002",
-        name: "Sovico Resort - Đà Nẵng (2 ngày 1 đêm)",
+        name: "Sovico Resort - Da Nang (2 days 1 night)",
         price: 1800000,
         category: "resort",
         serviceType: "sovico",
         tokenReward: 180,
         discount: 20,
         features: ["Mountain view", "Golf course", "Fine dining", "Cultural tour"],
-        description: "Gói nghỉ dưỡng tại Đà Nẵng với trải nghiệm văn hóa đặc sắc"
+        description: "Resort package in Da Nang with unique cultural experiences"
       },
       {
         id: "vikkibank-digital-001",
@@ -418,7 +418,7 @@ Hãy phân tích kỹ và đưa ra lời khuyên tốt nhất cho user này!
         serviceType: "vikkibank",
         tokenReward: 30,
         features: ["AI assistant", "Smart budgeting", "Investment advice", "Biometric security"],
-        description: "Dịch vụ ngân hàng số thế hệ mới với AI và machine learning"
+        description: "Next-generation digital banking service with AI and machine learning"
       },
       {
         id: "marketplace-electronics-001",
@@ -429,7 +429,7 @@ Hãy phân tích kỹ và đưa ra lời khuyên tốt nhất cho user này!
         tokenReward: 3500,
         discount: 8,
         features: ["Latest model", "256GB storage", "Pro camera", "5G support"],
-        description: "Điện thoại thông minh cao cấp với camera chuyên nghiệp"
+        description: "Premium smartphone with professional camera"
       },
       {
         id: "marketplace-electronics-002",
@@ -440,7 +440,7 @@ Hãy phân tích kỹ và đưa ra lời khuyên tốt nhất cho user này!
         tokenReward: 4500,
         discount: 12,
         features: ["M3 chip", "14-inch display", "16GB RAM", "512GB SSD"],
-        description: "Laptop chuyên nghiệp với chip M3 mới nhất"
+        description: "Professional laptop with latest M3 chip"
       }
     ];
   }

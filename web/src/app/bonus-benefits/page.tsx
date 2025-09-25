@@ -150,7 +150,7 @@ export default function BonusBenefits() {
           <BonusHighlights 
             userTier={userTier}
             totalPoints={totalPoints}
-            nextTierPoints={getNextTierPoints()}
+            nextTierPoints={getNextTierPoints() || undefined}
           />
 
           {/* Service Bonus Examples */}

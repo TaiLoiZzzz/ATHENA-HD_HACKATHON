@@ -6,7 +6,7 @@ import {
   CpuChipIcon,
   SparklesIcon,
   ChartBarIcon,
-  TrendingUpIcon,
+  ArrowTrendingUpIcon,
   FireIcon,
   StarIcon,
   GiftIcon,
@@ -142,7 +142,7 @@ const AIDashboard: React.FC<AIDashboardProps> = ({ className = '' }) => {
               <p className="text-2xl font-bold text-blue-600">+250%</p>
             </div>
             <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-              <TrendingUpIcon className="w-6 h-6 text-blue-600" />
+              <ArrowTrendingUpIcon className="w-6 h-6 text-blue-600" />
             </div>
           </div>
         </motion.div>
@@ -207,7 +207,7 @@ const AIDashboard: React.FC<AIDashboardProps> = ({ className = '' }) => {
 
           <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-4">
             <div className="flex items-center space-x-3 mb-2">
-              <ChatBubbleLeftRightIcon className="w-6 h-6 text-green-600" />
+              <CpuChipIcon className="w-6 h-6 text-green-600" />
               <h5 className="font-semibold text-gray-900">Sales Assistant</h5>
             </div>
             <p className="text-sm text-gray-700">
@@ -227,7 +227,7 @@ const AIDashboard: React.FC<AIDashboardProps> = ({ className = '' }) => {
 
           <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-4">
             <div className="flex items-center space-x-3 mb-2">
-              <TrendingUpIcon className="w-6 h-6 text-orange-600" />
+              <ArrowTrendingUpIcon className="w-6 h-6 text-orange-600" />
               <h5 className="font-semibold text-gray-900">Tối ưu token</h5>
             </div>
             <p className="text-sm text-gray-700">
@@ -254,8 +254,8 @@ const AIDashboard: React.FC<AIDashboardProps> = ({ className = '' }) => {
               AI tìm kiếm và đề xuất các ưu đãi phù hợp nhất với rank và nhu cầu của bạn
             </p>
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
 
       {/* Call to Action */}
       <motion.div
