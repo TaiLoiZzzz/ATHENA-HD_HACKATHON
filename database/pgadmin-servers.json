@@ -1,0 +1,25 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "ATHENA Development",
+      "Group": "Servers",
+      "Host": "athena-db-dev",
+      "Port": 5432,
+      "MaintenanceDB": "athena_db_dev",
+      "Username": "athena_dev",
+      "PassFile": "/tmp/pgpassfile",
+      "SSLMode": "prefer"
+    },
+    "2": {
+      "Name": "ATHENA Production",
+      "Group": "Servers",
+      "Host": "athena-db",
+      "Port": 5432,
+      "MaintenanceDB": "athena_db",
+      "Username": "athena_user",
+      "PassFile": "/tmp/pgpassfile",
+      "SSLMode": "prefer"
+    }
+  }
+}
+

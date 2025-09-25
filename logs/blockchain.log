@@ -1,0 +1,4 @@
+{"level":"info","message":"Initializing blockchain service (simulation mode)","timestamp":"2025-09-24T16:08:23.911Z"}
+{"level":"info","message":"Setting up Hyperledger Fabric connection...","timestamp":"2025-09-24T16:08:23.912Z"}
+{"level":"info","message":"Blockchain connection established (simulated)","timestamp":"2025-09-24T16:08:24.915Z"}
+{"level":"info","message":"Blockchain service initialized successfully","timestamp":"2025-09-24T16:08:24.916Z"}

@@ -1,0 +1,162 @@
+/* ATHENA Ranking System - Theme CSS */
+
+/* === RANK COLORS === */
+:root {
+  /* Diamond Theme */
+  --rank-diamond-primary: #3B82F6;
+  --rank-diamond-secondary: #8B5CF6;
+  --rank-diamond-gradient: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+  --rank-diamond-bg: linear-gradient(135deg, #EBF4FF 0%, #F3E8FF 100%);
+  --rank-diamond-border: #3B82F6;
+  --rank-diamond-text: #1E40AF;
+  
+  /* Gold Theme */
+  --rank-gold-primary: #F59E0B;
+  --rank-gold-secondary: #F97316;
+  --rank-gold-gradient: linear-gradient(135deg, #F59E0B 0%, #F97316 100%);
+  --rank-gold-bg: linear-gradient(135deg, #FFFBEB 0%, #FFF7ED 100%);
+  --rank-gold-border: #F59E0B;
+  --rank-gold-text: #92400E;
+  
+  /* Silver Theme */
+  --rank-silver-primary: #6B7280;
+  --rank-silver-secondary: #9CA3AF;
+  --rank-silver-gradient: linear-gradient(135deg, #6B7280 0%, #9CA3AF 100%);
+  --rank-silver-bg: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+  --rank-silver-border: #6B7280;
+  --rank-silver-text: #374151;
+  
+  /* Bronze Theme */
+  --rank-bronze-primary: #F97316;
+  --rank-bronze-secondary: #EA580C;
+  --rank-bronze-gradient: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+  --rank-bronze-bg: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
+  --rank-bronze-border: #F97316;
+  --rank-bronze-text: #C2410C;
+}
+
+/* === RANK BADGE THEMES === */
+.rank-badge-diamond {
+  background: var(--rank-diamond-gradient);
+  border-color: var(--rank-diamond-border);
+  color: white;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+}
+
+.rank-badge-gold {
+  background: var(--rank-gold-gradient);
+  border-color: var(--rank-gold-border);
+  color: white;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+}
+
+.rank-badge-silver {
+  background: var(--rank-silver-gradient);
+  border-color: var(--rank-silver-border);
+  color: white;
+  box-shadow: 0 4px 20px rgba(107, 114, 128, 0.3);
+}
+
+.rank-badge-bronze {
+  background: var(--rank-bronze-gradient);
+  border-color: var(--rank-bronze-border);
+  color: white;
+  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3);
+}
+
+/* === PROFILE SECTION THEMES === */
+.profile-section-diamond {
+  background: var(--rank-diamond-bg);
+  border: 2px solid var(--rank-diamond-border);
+}
+
+.profile-section-gold {
+  background: var(--rank-gold-bg);
+  border: 2px solid var(--rank-gold-border);
+}
+
+.profile-section-silver {
+  background: var(--rank-silver-bg);
+  border: 2px solid var(--rank-silver-border);
+}
+
+.profile-section-bronze {
+  background: var(--rank-bronze-bg);
+  border: 2px solid var(--rank-bronze-border);
+}
+
+/* === BONUS PREVIEW THEMES === */
+.bonus-preview-diamond {
+  background: var(--rank-diamond-bg);
+  border: 1px solid var(--rank-diamond-border);
+  color: var(--rank-diamond-text);
+}
+
+.bonus-preview-gold {
+  background: var(--rank-gold-bg);
+  border: 1px solid var(--rank-gold-border);
+  color: var(--rank-gold-text);
+}
+
+.bonus-preview-silver {
+  background: var(--rank-silver-bg);
+  border: 1px solid var(--rank-silver-border);
+  color: var(--rank-silver-text);
+}
+
+.bonus-preview-bronze {
+  background: var(--rank-bronze-bg);
+  border: 1px solid var(--rank-bronze-border);
+  color: var(--rank-bronze-text);
+}
+
+/* === PROGRESS BAR THEMES === */
+.progress-diamond {
+  background: var(--rank-diamond-gradient);
+}
+
+.progress-gold {
+  background: var(--rank-gold-gradient);
+}
+
+.progress-silver {
+  background: var(--rank-silver-gradient);
+}
+
+.progress-bronze {
+  background: var(--rank-bronze-gradient);
+}
+
+/* === ANIMATIONS === */
+@keyframes rankGlow {
+  0% { box-shadow: 0 0 5px currentColor; }
+  50% { box-shadow: 0 0 20px currentColor; }
+  100% { box-shadow: 0 0 5px currentColor; }
+}
+
+.rank-glow-animation {
+  animation: rankGlow 2s ease-in-out infinite;
+}
+
+@keyframes pointsCounter {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+
+.points-update {
+  animation: pointsCounter 0.3s ease-in-out;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .rank-badge-large {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .profile-section {
+    padding: 1rem;
+    margin: 0.5rem 0;
+  }
+}
+

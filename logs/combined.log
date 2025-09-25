@@ -1,0 +1,7 @@
+{"code":"ECONNREFUSED","level":"error","message":"Failed to start server:","stack":"AggregateError [ECONNREFUSED]: \n    at E:\\HDBANK\\node_modules\\.pnpm\\pg-pool@3.10.1_pg@8.16.3\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async startServer (E:\\HDBANK\\backend\\server.js:112:5)","timestamp":"2025-09-24T16:06:58.398Z"}
+{"level":"info","message":"Database connected successfully","timestamp":"2025-09-24T16:08:23.908Z"}
+{"level":"info","message":"Blockchain service initialized","timestamp":"2025-09-24T16:08:24.916Z"}
+{"level":"info","message":"ATHENA Platform server running on port 3000","timestamp":"2025-09-24T16:08:24.921Z"}
+{"level":"info","message":"GET /health - ::1","timestamp":"2025-09-24T16:08:27.870Z"}
+{"level":"info","message":"GET /favicon.ico - ::1","timestamp":"2025-09-24T16:08:29.002Z"}
+{"level":"info","message":"GET / - ::1","timestamp":"2025-09-24T16:08:34.950Z"}

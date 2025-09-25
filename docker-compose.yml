@@ -1,0 +1,138 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  athena-db:
+    image: postgres:15-alpine
+    container_name: athena-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: athena_db
+      POSTGRES_USER: athena_user
+      POSTGRES_PASSWORD: athena_password
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - athena_db_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+      - ./database/backups:/backups
+    networks:
+      - athena-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U athena_user -d athena_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # Redis for caching
+  athena-redis:
+    image: redis:7-alpine
+    container_name: athena-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - athena_redis_data:/data
+    networks:
+      - athena-network
+    command: redis-server --appendonly yes --requirepass athena_redis_password
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ATHENA Backend API
+  athena-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: athena-backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DB_HOST: athena-db
+      DB_PORT: 5432
+      DB_NAME: athena_db
+      DB_USER: athena_user
+      DB_PASSWORD: athena_password
+      REDIS_HOST: athena-redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: athena_redis_password
+      JWT_SECRET: ${JWT_SECRET:-your_super_secret_jwt_key_change_in_production}
+    volumes:
+      - ./logs:/app/logs
+      - ./uploads:/app/uploads
+    networks:
+      - athena-network
+    depends_on:
+      athena-db:
+        condition: service_healthy
+      athena-redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ATHENA Web Application
+  athena-web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: athena-web
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3000/api
+      NEXT_PUBLIC_SOCKET_URL: http://localhost:3000
+      NEXT_PUBLIC_APP_NAME: ATHENA Platform
+      NEXT_PUBLIC_APP_VERSION: 1.0.0
+    networks:
+      - athena-network
+    depends_on:
+      athena-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # pgAdmin for database management
+  athena-pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: athena-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@athena.com
+      PGADMIN_DEFAULT_PASSWORD: athena_admin_password
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "8080:80"
+    volumes:
+      - athena_pgadmin_data:/var/lib/pgadmin
+    networks:
+      - athena-network
+    depends_on:
+      - athena-db
+
+volumes:
+  athena_db_data:
+    driver: local
+  athena_redis_data:
+    driver: local
+  athena_pgadmin_data:
+    driver: local
+
+networks:
+  athena-network:
+    driver: bridge

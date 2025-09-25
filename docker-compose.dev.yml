@@ -1,0 +1,90 @@
+# Development Docker Compose Configuration
+# Use this for local development with hot reload and debugging
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database for Development
+  athena-db-dev:
+    image: postgres:15-alpine
+    container_name: athena-postgres-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: athena_db_dev
+      POSTGRES_USER: athena_dev
+      POSTGRES_PASSWORD: athena_dev_password
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5433:5432" # Different port to avoid conflicts
+    volumes:
+      - athena_db_dev_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+      - ./database/backups:/backups
+    networks:
+      - athena-dev-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U athena_dev -d athena_db_dev"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # Redis for Development
+  athena-redis-dev:
+    image: redis:7-alpine
+    container_name: athena-redis-dev
+    restart: unless-stopped
+    ports:
+      - "6380:6379" # Different port to avoid conflicts
+    volumes:
+      - athena_redis_dev_data:/data
+    networks:
+      - athena-dev-network
+    command: redis-server --appendonly yes --requirepass athena_dev_redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # pgAdmin for Development
+  athena-pgadmin-dev:
+    image: dpage/pgadmin4:latest
+    container_name: athena-pgadmin-dev
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dev@athena.com
+      PGADMIN_DEFAULT_PASSWORD: athena_dev_admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "8081:80" # Different port to avoid conflicts
+    volumes:
+      - athena_pgadmin_dev_data:/var/lib/pgadmin
+      - ./database/pgadmin-servers.json:/pgadmin4/servers.json
+    networks:
+      - athena-dev-network
+    depends_on:
+      - athena-db-dev
+
+  # Mailhog for Email Testing
+  athena-mailhog:
+    image: mailhog/mailhog:latest
+    container_name: athena-mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025" # SMTP port
+      - "8025:8025" # Web UI port
+    networks:
+      - athena-dev-network
+
+volumes:
+  athena_db_dev_data:
+    driver: local
+  athena_redis_dev_data:
+    driver: local
+  athena_pgadmin_dev_data:
+    driver: local
+
+networks:
+  athena-dev-network:
+    driver: bridge
