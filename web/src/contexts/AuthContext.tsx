@@ -4,6 +4,7 @@ import React, { createContext, useContext, useReducer, useEffect, ReactNode } fr
 import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
 import { apiService, User } from '@/lib/api';
+import { sovTokenService } from '@/services/sovTokenService';
 
 // Auth state interface
 interface AuthState {
@@ -151,6 +152,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await apiService.login(email, password);
       const { user, token } = response;
 
+      // Initialize SOV wallet for user if not exists
+      const existingWallet = sovTokenService.getWallet();
+      if (existingWallet.balance === 0) {
+        sovTokenService.initializeWallet(user.id);
+      }
+
       dispatch({
         type: 'LOGIN_SUCCESS',
         payload: { user, token },
@@ -179,12 +186,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await apiService.register(userData);
       const { user, token } = response;
 
+      // Initialize SOV wallet for new user
+      sovTokenService.initializeWallet(user.id);
+
       dispatch({
         type: 'LOGIN_SUCCESS',
         payload: { user, token },
       });
 
-      toast.success(`Welcome to ATHENA, ${user.fullName}!`);
+      toast.success(`Welcome to ATHENA, ${user.fullName}! You received welcome SOV tokens!`);
 
       return { success: true };
     } catch (error: any) {

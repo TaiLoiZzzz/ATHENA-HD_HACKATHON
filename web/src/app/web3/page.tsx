@@ -91,7 +91,7 @@ export default function Web3Page() {
   const [blockchainTransactions, setBlockchainTransactions] = useState<BlockchainTransaction[]>([]);
   const [contractInfo, setContractInfo] = useState<ContractInfo | null>(null);
   const [activeTab, setActiveTab] = useState('overview');
-  const [walletBalance, setWalletBalance] = useState('0');
+  const [walletBalance, setWalletBalance] = useState<any>(null);
 
   useEffect(() => {
     fetchWeb3Profile();
@@ -100,12 +100,12 @@ export default function Web3Page() {
 
   const fetchWeb3Profile = async () => {
     try {
-      const response = await api.get('/web3/profile');
-      setProfile(response.profile || response.data?.profile);
+      const response = await api.getWeb3Profile();
+      setProfile(response.profile);
       
       // Fetch additional Web3 data if wallet is connected
-      if (response.profile?.wallet_address || response.data?.profile?.wallet_address) {
-        const walletAddress = response.profile?.wallet_address || response.data?.profile?.wallet_address;
+      if (response.profile?.wallet_address) {
+        const walletAddress = response.profile.wallet_address;
         await Promise.all([
           fetchBlockchainTransactions(),
           fetchWalletBalance(walletAddress)
@@ -122,7 +122,7 @@ export default function Web3Page() {
 
   const fetchBlockchainTransactions = async () => {
     try {
-      const response = await api.get('/web3/transactions');
+      const response = await api.getWeb3Transactions();
       setBlockchainTransactions(response.transactions || []);
     } catch (error: any) {
       console.error('Failed to load blockchain transactions:', error);
@@ -131,7 +131,7 @@ export default function Web3Page() {
 
   const fetchContractInfo = async () => {
     try {
-      const response = await api.get('/web3/contract-info');
+      const response = await api.getWeb3ContractInfo();
       setContractInfo(response.contract);
     } catch (error: any) {
       console.error('Failed to load contract info:', error);
@@ -140,7 +140,7 @@ export default function Web3Page() {
 
   const fetchWalletBalance = async (walletAddress: string) => {
     try {
-      const response = await api.get(`/web3/wallet-balance/${walletAddress}`);
+      const response = await api.getWeb3WalletBalance(walletAddress);
       setWalletBalance(response.balance);
     } catch (error: any) {
       console.error('Failed to load wallet balance:', error);

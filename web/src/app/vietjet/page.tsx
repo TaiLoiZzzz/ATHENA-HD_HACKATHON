@@ -101,7 +101,7 @@ export default function VietjetBooking() {
     passengers: 1,
     cabin: 'economy'
   });
-  const [searchResults, setSearchResults] = useState<{ outbound: Flight[], return?: Flight[] }>({ outbound: [] });
+  const [searchResults, setSearchResults] = useState<{ flights: Flight[], total: number, searchParams: any }>({ flights: [], total: 0, searchParams: {} });
   const [selectedOutbound, setSelectedOutbound] = useState<Flight | null>(null);
   const [selectedReturn, setSelectedReturn] = useState<Flight | null>(null);
   const [passengers, setPassengers] = useState<Passenger[]>([]);
@@ -125,10 +125,11 @@ export default function VietjetBooking() {
 
   const loadAirports = async () => {
     try {
-      const response = await api.get('/flights/airports');
-      setAirports(response.airports);
+      const response = await api.getAirports();
+      setAirports(response.airports || []);
     } catch (error: any) {
       toast.error('Failed to load airports');
+      setAirports([]);
     }
   };
 
@@ -165,10 +166,10 @@ export default function VietjetBooking() {
         params.append('returnDate', searchParams.returnDate);
       }
 
-      const response = await api.get(`/flights/search?${params}`);
+      const response = await api.searchVietjetFlights(searchParams);
       setSearchResults(response);
       setCurrentStep('results');
-      toast.success(`Found ${response.outbound.length} flights`);
+      toast.success(`Found ${response.flights.length} flights`);
     } catch (error: any) {
       toast.error(error.message || 'Failed to search flights');
     } finally {
@@ -808,15 +809,9 @@ export default function VietjetBooking() {
                   
                   <div className="space-y-4 mb-8">
                     <h3 className="text-lg font-medium text-gray-900">Outbound Flights</h3>
-                    {searchResults.outbound.map(flight => renderFlightCard(flight, 'outbound'))}
+                    {searchResults.flights.map(flight => renderFlightCard(flight, 'outbound'))}
                   </div>
 
-                  {searchResults.return && searchResults.return.length > 0 && (
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-medium text-gray-900">Return Flights</h3>
-                      {searchResults.return.map(flight => renderFlightCard(flight, 'return'))}
-                    </div>
-                  )}
                 </div>
               )}
 

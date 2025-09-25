@@ -1,4 +1,9 @@
-import api from '@/lib/api';
+import { 
+  mockRankingData, 
+  mockLeaderboard, 
+  mockServiceBonus, 
+  simulateApiDelay 
+} from '@/lib/mockData';
 
 export interface UserRank {
   name: string;
@@ -90,46 +95,12 @@ export interface LeaderboardEntry {
 }
 
 class RankingService {
-  private getAuthToken(): string | null {
-    if (typeof window === 'undefined') return null;
-    
-    return document.cookie
-      .split('; ')
-      .find(row => row.startsWith('authToken='))
-      ?.split('=')[1] || null;
-  }
-
-  private async makeRequest<T>(endpoint: string): Promise<T> {
-    const token = this.getAuthToken();
-    
-    if (!token) {
-      throw new Error('No authentication token found');
-    }
-
-    const response = await fetch(`/api/ranking${endpoint}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    
-    if (!data.success) {
-      throw new Error(data.error || 'API request failed');
-    }
-
-    return data;
-  }
+  // Mock implementation - no need for auth tokens
 
   async getUserRanking(): Promise<UserRanking> {
     try {
-      const response = await this.makeRequest<{ ranking: UserRanking }>('/ranking/user-rank');
-      return response.ranking;
+      await simulateApiDelay(400);
+      return mockRankingData;
     } catch (error) {
       console.error('Failed to fetch user ranking:', error);
       // Return default Bronze rank matching UserRanking interface
@@ -157,16 +128,16 @@ class RankingService {
 
   async getServiceBonus(serviceType: string, amount: number = 0, category?: string): Promise<ServiceBonus | null> {
     try {
-      const params = new URLSearchParams({
-        amount: amount.toString()
-      });
+      await simulateApiDelay(300);
       
-      if (category) {
-        params.append('category', category);
-      }
-
-      const response = await this.makeRequest<any>(`/ranking/service-bonus/${serviceType}?${params}`);
-      return response;
+      // Return mock service bonus with dynamic amount
+      const bonus = {
+        ...mockServiceBonus,
+        amount: Math.floor(amount * 0.1), // 10% bonus
+        transactionAmount: amount
+      };
+      
+      return bonus;
     } catch (error) {
       console.error('Failed to fetch service bonus:', error);
       return null;
@@ -175,8 +146,50 @@ class RankingService {
 
   async getAllRanks(): Promise<UserRank[]> {
     try {
-      const response = await this.makeRequest<{ ranks: UserRank[] }>('/ranks');
-      return response.ranks;
+      await simulateApiDelay(300);
+      
+      // Return mock ranks
+      return [
+        {
+          name: 'Bronze',
+          level: 1,
+          icon: '🥉',
+          color: '#CD7F32',
+          bonusMultiplier: 1.0,
+          benefits: ['Welcome bonus', 'Basic support'],
+          minPoints: 0,
+          maxPoints: 999
+        },
+        {
+          name: 'Silver',
+          level: 2,
+          icon: '🥈',
+          color: '#C0C0C0',
+          bonusMultiplier: 1.2,
+          benefits: ['Priority support', 'Exclusive offers'],
+          minPoints: 1000,
+          maxPoints: 4999
+        },
+        {
+          name: 'Gold',
+          level: 3,
+          icon: '🥇',
+          color: '#FFD700',
+          bonusMultiplier: 1.5,
+          benefits: ['VIP support', 'Higher earning rates', 'Exclusive rewards'],
+          minPoints: 5000,
+          maxPoints: 9999
+        },
+        {
+          name: 'Diamond',
+          level: 4,
+          icon: '💎',
+          color: '#B9F2FF',
+          bonusMultiplier: 2.0,
+          benefits: ['Concierge service', 'Maximum earning rates', 'Premium rewards'],
+          minPoints: 10000
+        }
+      ];
     } catch (error) {
       console.error('Failed to fetch ranks:', error);
       return [];
@@ -185,13 +198,10 @@ class RankingService {
 
   async getLeaderboard(limit: number = 10, offset: number = 0): Promise<LeaderboardEntry[]> {
     try {
-      const params = new URLSearchParams({
-        limit: limit.toString(),
-        offset: offset.toString()
-      });
-
-      const response = await this.makeRequest<{ leaderboard: LeaderboardEntry[] }>(`/leaderboard?${params}`);
-      return response.leaderboard;
+      await simulateApiDelay(400);
+      
+      const paginatedLeaderboard = mockLeaderboard.slice(offset, offset + limit);
+      return paginatedLeaderboard;
     } catch (error) {
       console.error('Failed to fetch leaderboard:', error);
       return [];
@@ -200,12 +210,40 @@ class RankingService {
 
   async getUserHistory(limit: number = 20): Promise<RankingHistory[]> {
     try {
-      const params = new URLSearchParams({
-        limit: limit.toString()
-      });
-
-      const response = await this.makeRequest<{ history: RankingHistory[] }>(`/history?${params}`);
-      return response.history;
+      await simulateApiDelay(500);
+      
+      // Return mock ranking history
+      return [
+        {
+          id: 'hist_001',
+          activityType: 'rank_up',
+          pointsEarned: 1000,
+          serviceType: 'flight',
+          oldRank: { name: 'Silver', icon: '🥈' },
+          newRank: { name: 'Gold', icon: '🥇' },
+          transaction: { description: 'Flight booking reward', amount: 500 },
+          metadata: { airline: 'VietJet Air' },
+          createdAt: '2024-01-15T10:30:00Z'
+        },
+        {
+          id: 'hist_002',
+          activityType: 'points_earned',
+          pointsEarned: 300,
+          serviceType: 'banking',
+          transaction: { description: 'Banking service reward', amount: 300 },
+          metadata: { bank: 'HDBank' },
+          createdAt: '2024-01-14T14:20:00Z'
+        },
+        {
+          id: 'hist_003',
+          activityType: 'achievement_unlocked',
+          pointsEarned: 200,
+          serviceType: 'marketplace',
+          transaction: { description: 'First marketplace purchase', amount: 200 },
+          metadata: { achievement: 'Marketplace Explorer' },
+          createdAt: '2024-01-13T09:15:00Z'
+        }
+      ].slice(0, limit);
     } catch (error) {
       console.error('Failed to fetch user history:', error);
       return [];

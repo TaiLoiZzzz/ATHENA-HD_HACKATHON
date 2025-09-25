@@ -70,7 +70,7 @@ export default function LoyaltyDashboard({ className = '' }: LoyaltyDashboardPro
 
   const fetchLoyaltyStatus = async () => {
     try {
-      const response = await api.get('/loyalty/status');
+      const response = await api.getLoyaltyStatus();
       setLoyaltyStatus(response.data);
     } catch (error) {
       console.error('Failed to fetch loyalty status:', error);
