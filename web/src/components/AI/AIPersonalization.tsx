@@ -1,0 +1,330 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  SparklesIcon,
+  CpuChipIcon,
+  ArrowTrendingUpIcon,
+  FireIcon,
+  StarIcon,
+  GiftIcon,
+  ClockIcon,
+  CheckCircleIcon,
+  ArrowRightIcon,
+  CurrencyDollarIcon,
+  TrophyIcon,
+  BoltIcon
+} from '@heroicons/react/24/outline';
+import { aiPersonalizationService } from '@/services/aiPersonalizationService';
+import { sovTokenService } from '@/services/sovTokenService';
+
+interface AIRecommendation {
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    category: string;
+    serviceType: string;
+    tokenReward: number;
+    discount?: number;
+    features: string[];
+    description: string;
+  };
+  reason: string;
+  tokenOptimization: string;
+  urgency: 'low' | 'medium' | 'high';
+  confidence: number;
+  personalizedMessage: string;
+  expectedTokens: number;
+  roi: number;
+}
+
+interface AIPersonalizationProps {
+  className?: string;
+}
+
+const AIPersonalization: React.FC<AIPersonalizationProps> = ({ className = '' }) => {
+  const [recommendations, setRecommendations] = useState<AIRecommendation[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [newsItems, setNewsItems] = useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      
+      // Load user profile
+      const wallet = sovTokenService.getWallet();
+      const stats = sovTokenService.getWalletStats();
+      const userProfile = {
+        rank: stats.membershipTier.name,
+        totalPoints: wallet.totalEarned,
+        totalEarned: wallet.totalEarned,
+        totalSpent: wallet.totalSpent,
+        currentBalance: wallet.balance,
+        membershipTier: stats.membershipTier.name,
+        isAthenaPrime: true,
+        preferences: ['travel', 'banking', 'resort'],
+        transactionHistory: []
+      };
+      setUserProfile(userProfile);
+
+      // Load news and products
+      const [news, productList] = await Promise.all([
+        aiPersonalizationService.getNewsAnalysis(),
+        aiPersonalizationService.getAvailableProducts()
+      ]);
+      
+      setNewsItems(news);
+      setProducts(productList);
+
+      // Get AI recommendations
+      const aiRecommendations = await aiPersonalizationService.getPersonalizedRecommendations(
+        userProfile,
+        news,
+        productList
+      );
+      
+      setRecommendations(aiRecommendations);
+    } catch (error) {
+      console.error('Failed to load AI recommendations:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getUrgencyColor = (urgency: string) => {
+    switch (urgency) {
+      case 'high': return 'text-red-600 bg-red-100';
+      case 'medium': return 'text-orange-600 bg-orange-100';
+      case 'low': return 'text-green-600 bg-green-100';
+      default: return 'text-gray-600 bg-gray-100';
+    }
+  };
+
+  const getUrgencyIcon = (urgency: string) => {
+    switch (urgency) {
+      case 'high': return <FireIcon className="w-4 h-4" />;
+      case 'medium': return <ClockIcon className="w-4 h-4" />;
+      case 'low': return <CheckCircleIcon className="w-4 h-4" />;
+      default: return <StarIcon className="w-4 h-4" />;
+    }
+  };
+
+  const getServiceIcon = (serviceType: string) => {
+    switch (serviceType) {
+      case 'vietjet': return '✈️';
+      case 'hdbank': return '🏦';
+      case 'sovico': return '🏨';
+      case 'vikkibank': return '🏪';
+      case 'marketplace': return '🛒';
+      default: return '💎';
+    }
+  };
+
+  const getServiceColor = (serviceType: string) => {
+    switch (serviceType) {
+      case 'vietjet': return 'from-blue-500 to-cyan-500';
+      case 'hdbank': return 'from-green-500 to-emerald-500';
+      case 'sovico': return 'from-purple-500 to-pink-500';
+      case 'vikkibank': return 'from-orange-500 to-red-500';
+      case 'marketplace': return 'from-indigo-500 to-purple-500';
+      default: return 'from-gray-500 to-gray-600';
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className={`bg-white rounded-xl shadow-lg p-6 ${className}`}>
+        <div className="flex items-center space-x-3 mb-4">
+          <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+            <CpuChipIcon className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900">AI Personalization</h3>
+            <p className="text-sm text-gray-600">Đang phân tích dữ liệu...</p>
+          </div>
+        </div>
+        <div className="animate-pulse space-y-3">
+          <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+          <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`bg-white rounded-xl shadow-lg p-6 ${className}`}>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+            <CpuChipIcon className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h3 className="text-xl font-bold text-gray-900">AI Personalization</h3>
+            <p className="text-sm text-gray-600">
+              Lời khuyên tối ưu cho rank {userProfile?.rank} của bạn
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center space-x-2">
+          <SparklesIcon className="w-5 h-5 text-purple-500" />
+          <span className="text-sm font-medium text-purple-600">AI Powered</span>
+        </div>
+      </div>
+
+      {/* AI Analysis Summary */}
+      <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 mb-6">
+        <div className="flex items-center space-x-2 mb-2">
+          <CpuChipIcon className="w-5 h-5 text-purple-600" />
+          <span className="font-semibold text-gray-900">Phân tích AI</span>
+        </div>
+        <p className="text-sm text-gray-700">
+          Dựa trên rank {userProfile?.rank}, lịch sử giao dịch và tin tức hiện tại, 
+          AI đã chọn {recommendations.length} sản phẩm tối ưu nhất cho bạn.
+        </p>
+      </div>
+
+      {/* Recommendations */}
+      <div className="space-y-4">
+        <AnimatePresence>
+          {recommendations.map((rec, index) => (
+            <motion.div
+              key={rec.product.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ delay: index * 0.1 }}
+              className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-start space-x-4">
+                {/* Service Icon */}
+                <div className={`w-12 h-12 bg-gradient-to-r ${getServiceColor(rec.product.serviceType)} rounded-lg flex items-center justify-center text-white text-xl`}>
+                  {getServiceIcon(rec.product.serviceType)}
+                </div>
+
+                {/* Content */}
+                <div className="flex-1">
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <h4 className="font-semibold text-gray-900">{rec.product.name}</h4>
+                      <p className="text-sm text-gray-600">{rec.product.description}</p>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getUrgencyColor(rec.urgency)}`}>
+                        {getUrgencyIcon(rec.urgency)}
+                        <span className="ml-1 capitalize">{rec.urgency}</span>
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {Math.round(rec.confidence * 100)}% confidence
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* AI Reasoning */}
+                  <div className="bg-blue-50 rounded-lg p-3 mb-3">
+                    <div className="flex items-start space-x-2">
+                      <CpuChipIcon className="w-4 h-4 text-blue-600 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-medium text-blue-900">Lý do AI khuyên:</p>
+                        <p className="text-sm text-blue-800">{rec.reason}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Token Optimization */}
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-4">
+                      <div className="flex items-center space-x-1">
+                        <CurrencyDollarIcon className="w-4 h-4 text-green-600" />
+                        <span className="text-sm font-medium text-green-600">
+                          +{rec.expectedTokens} SOV
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <ArrowTrendingUpIcon className="w-4 h-4 text-blue-600" />
+                        <span className="text-sm font-medium text-blue-600">
+                          ROI: {Math.round(rec.roi * 100)}%
+                        </span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-lg font-bold text-gray-900">
+                        {rec.product.price.toLocaleString()} VND
+                      </p>
+                      {rec.product.discount && (
+                        <p className="text-sm text-green-600">
+                          -{rec.product.discount}% discount
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Personalized Message */}
+                  <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-3 mb-3">
+                    <div className="flex items-start space-x-2">
+                      <GiftIcon className="w-4 h-4 text-green-600 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-medium text-green-900">Lời khuyên cá nhân:</p>
+                        <p className="text-sm text-green-800">{rec.personalizedMessage}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Features */}
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {rec.product.features.map((feature, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+                      >
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Action Button */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <TrophyIcon className="w-4 h-4 text-yellow-500" />
+                      <span className="text-sm text-gray-600">
+                        Tối ưu cho rank {userProfile?.rank}
+                      </span>
+                    </div>
+                    <button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-200 flex items-center space-x-2">
+                      <span>Xem chi tiết</span>
+                      <ArrowRightIcon className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
+
+      {/* AI Insights */}
+      <div className="mt-6 bg-gradient-to-r from-purple-100 to-pink-100 rounded-lg p-4">
+          <div className="flex items-center space-x-2 mb-2">
+            <CpuChipIcon className="w-5 h-5 text-purple-600" />
+            <span className="font-semibold text-gray-900">AI Insights</span>
+          </div>
+        <p className="text-sm text-gray-700">
+          Dựa trên phân tích, bạn có thể tối ưu hóa token bằng cách tập trung vào các dịch vụ 
+          phù hợp với rank {userProfile?.rank} và sở thích cá nhân. AI khuyên bạn nên ưu tiên 
+          các sản phẩm có ROI cao và phù hợp với xu hướng hiện tại.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default AIPersonalization;

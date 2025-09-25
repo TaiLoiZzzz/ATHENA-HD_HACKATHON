@@ -6,6 +6,7 @@ import { TrophyIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { UserRanking, rankingService } from '@/services/rankingService';
 import RankBadge from './RankBadge';
 import { useRankingTheme } from './ThemeProvider';
+import { SessionStorageManager, SessionStorageKeys } from '@/utils/sessionStorage';
 import toast from 'react-hot-toast';
 
 interface UserRankDisplayProps {
@@ -32,24 +33,28 @@ export default function UserRankDisplay({ className = '', compact = false }: Use
       if (userRanking) {
         updateTheme(userRanking);
         
-        // Show rank notification with theme
+        // Show rank notification with theme only once per session
         if (userRanking.rank?.name) {
-          const rankEmoji = userRanking.rank.icon || 
-            (userRanking.rank.name === 'Diamond' ? '💎' :
-             userRanking.rank.name === 'Gold' ? '🥇' :
-             userRanking.rank.name === 'Silver' ? '🥈' : '🥉');
-          
-          toast.success(
-            `${rankEmoji} Welcome back, ${userRanking.rank.name} member!`,
-            {
-              style: {
-                background: themeColors.background,
-                border: `1px solid ${themeColors.border}`,
-                color: themeColors.text,
-              },
-              duration: 3000,
-            }
-          );
+          if (SessionStorageManager.shouldShow(SessionStorageKeys.WELCOME_NOTIFICATION_SHOWN)) {
+            const rankEmoji = userRanking.rank.icon || 
+              (userRanking.rank.name === 'Diamond' ? '💎' :
+               userRanking.rank.name === 'Gold' ? '🥇' :
+               userRanking.rank.name === 'Silver' ? '🥈' : '🥉');
+            
+            toast.success(
+              `${rankEmoji} Welcome back, ${userRanking.rank.name} member!`,
+              {
+                style: {
+                  background: themeColors.background,
+                  border: `1px solid ${themeColors.border}`,
+                  color: themeColors.text,
+                },
+                duration: 3000,
+              }
+            );
+            
+            SessionStorageManager.markAsShown(SessionStorageKeys.WELCOME_NOTIFICATION_SHOWN);
+          }
         }
       }
     } catch (error) {

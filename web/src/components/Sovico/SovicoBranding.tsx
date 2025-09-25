@@ -84,7 +84,7 @@ const sovicoPromotions: SovicoPromotion[] = [
     description: 'Celebrate the launch of unified payments with exclusive rewards',
     discount: '50% OFF',
     validUntil: '2024-12-31',
-    services: ['HDBank', 'Vietjet', 'Marketplace'],
+    services: ['HDBank', 'Vietjet', 'Vikkibank'],
     cta: 'Claim Now',
     href: '/sovico',
     featured: true,
@@ -223,7 +223,7 @@ export default function SovicoBranding({
               className="space-y-2"
             >
               <ShoppingCartIcon className="w-12 h-12 mx-auto text-purple-300" />
-              <h3 className="text-lg font-semibold">SOV Marketplace</h3>
+              <h3 className="text-lg font-semibold">SOV Ecosystem</h3>
               <p className="text-sm opacity-80">Trade tokens and exclusive products</p>
             </motion.div>
           </div>

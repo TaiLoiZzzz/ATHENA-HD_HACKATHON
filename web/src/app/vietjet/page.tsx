@@ -4,7 +4,11 @@ import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout/Layout';
 import SOVWallet from '@/components/SOVWallet/SOVWallet';
 import ServiceBonusPreview from '@/components/Ranking/ServiceBonusPreview';
+import InlineBonusDisplay from '@/components/UserTier/InlineBonusDisplay';
+import FlightPayment from '@/components/Flight/FlightPayment';
+import FlightBookingPayment from '@/components/Flight/FlightBookingPayment';
 import api from '@/lib/api';
+import { sovTokenService } from '@/services/sovTokenService';
 import {
   PaperAirplaneIcon,
   CalendarIcon,
@@ -123,6 +127,16 @@ export default function VietjetBooking() {
     initializePassengers();
   }, [searchParams.passengers]);
 
+  // Update SOV token amount when flight is selected
+  useEffect(() => {
+    if (selectedOutbound) {
+      // Calculate SOV token amount based on flight price
+      // For demo purposes, use 1 SOV = 10,000 VND
+      const tokenAmount = Math.ceil(selectedOutbound.price.base / 10000);
+      setSovTokenAmount(tokenAmount);
+    }
+  }, [selectedOutbound]);
+
   const loadAirports = async () => {
     try {
       const response = await api.getAirports();
@@ -180,13 +194,13 @@ export default function VietjetBooking() {
   const selectFlight = (flight: Flight, type: 'outbound' | 'return') => {
     if (type === 'outbound') {
       setSelectedOutbound(flight);
+      // For one-way trips, go directly to details after selecting outbound
+      if (!searchParams.returnDate) {
+        setCurrentStep('details');
+      }
     } else {
       setSelectedReturn(flight);
-    }
-
-    // If round trip and both flights selected, or one way and outbound selected
-    if ((searchParams.returnDate && selectedOutbound && selectedReturn) || 
-        (!searchParams.returnDate && selectedOutbound)) {
+      // For round trips, go to details after selecting return flight
       setCurrentStep('details');
     }
   };
@@ -235,30 +249,6 @@ export default function VietjetBooking() {
     setCurrentStep('payment');
   };
 
-  const processBooking = async () => {
-    setIsLoading(true);
-    try {
-      const bookingData = {
-        flightDetails: selectedOutbound,
-        returnFlightDetails: selectedReturn,
-        passengers,
-        contactInfo,
-        paymentMethod,
-        sovTokenAmount,
-        fiatAmount,
-        bonusTokenPercentage
-      };
-
-      const response = await api.post('/flights/book', bookingData);
-      
-      toast.success('Flight booked successfully!');
-      setCurrentStep('confirmation');
-    } catch (error: any) {
-      toast.error(error.message || 'Booking failed');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const getBonusTokenOptions = () => [
     { value: 0, label: 'No Bonus', description: 'Standard token earning' },
@@ -388,17 +378,32 @@ export default function VietjetBooking() {
     </div>
   );
 
-  const renderFlightCard = (flight: Flight, type: 'outbound' | 'return') => (
-    <motion.div
-      key={flight.flightNumber}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow cursor-pointer border-2 border-transparent hover:border-blue-200"
-      onClick={() => selectFlight(flight, type)}
-    >
+  const renderFlightCard = (flight: Flight, type: 'outbound' | 'return') => {
+    const isSelected = (type === 'outbound' && selectedOutbound?.flightNumber === flight.flightNumber) ||
+                      (type === 'return' && selectedReturn?.flightNumber === flight.flightNumber);
+    
+    return (
+      <motion.div
+        key={flight.flightNumber}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className={`bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all cursor-pointer border-2 ${
+          isSelected 
+            ? 'border-blue-500 bg-blue-50' 
+            : 'border-transparent hover:border-blue-200'
+        }`}
+        onClick={() => selectFlight(flight, type)}
+      >
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h3 className="text-lg font-bold text-gray-900">{flight.flightNumber}</h3>
+          <div className="flex items-center space-x-2">
+            <h3 className="text-lg font-bold text-gray-900">{flight.flightNumber}</h3>
+            {isSelected && (
+              <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full">
+                Selected
+              </span>
+            )}
+          </div>
           <p className="text-sm text-gray-600">{flight.airline} • {flight.aircraft}</p>
         </div>
         <div className="text-right">
@@ -454,7 +459,7 @@ export default function VietjetBooking() {
         </div>
       </div>
 
-      <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-3">
+      <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-3 mb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <SparklesIcon className="h-5 w-5 text-purple-600" />
@@ -466,8 +471,26 @@ export default function VietjetBooking() {
           </div>
         </div>
       </div>
+
+      {/* Select Button */}
+      <div className="flex justify-end">
+        <button
+          className={`px-6 py-2 rounded-lg font-medium transition-all ${
+            isSelected
+              ? 'bg-green-600 text-white cursor-default'
+              : 'bg-blue-600 hover:bg-blue-700 text-white'
+          }`}
+          onClick={(e) => {
+            e.stopPropagation();
+            selectFlight(flight, type);
+          }}
+        >
+          {isSelected ? 'Selected ✓' : 'Select Flight'}
+        </button>
+      </div>
     </motion.div>
-  );
+    );
+  };
 
   const renderPassengerForm = () => (
     <div className="bg-white rounded-xl shadow-lg p-8">
@@ -645,129 +668,6 @@ export default function VietjetBooking() {
     </div>
   );
 
-  const renderPaymentForm = () => (
-    <div className="bg-white rounded-xl shadow-lg p-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Payment & Bonus Tokens</h2>
-
-      {/* Bonus Token Selection */}
-      <div className="mb-8 p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg">
-        <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
-          <GiftIcon className="h-6 w-6 text-purple-600 mr-2" />
-          Bonus Token Options
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {getBonusTokenOptions().map((option) => (
-            <div
-              key={option.value}
-              onClick={() => setBonusTokenPercentage(option.value)}
-              className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                bonusTokenPercentage === option.value
-                  ? 'border-purple-500 bg-purple-100'
-                  : 'border-gray-200 hover:border-purple-300'
-              }`}
-            >
-              <div className="text-center">
-                <h4 className="font-medium text-gray-900">{option.label}</h4>
-                <p className="text-sm text-gray-600 mt-1">{option.description}</p>
-                {option.cost && (
-                  <p className="text-sm font-medium text-purple-600 mt-2">
-                    +{option.cost.toLocaleString()} VND
-                  </p>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Payment Method Selection */}
-      <div className="mb-8">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Payment Method</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[
-            { value: 'fiat', label: 'Credit/Debit Card', description: 'Pay with VND currency' },
-            { value: 'sov_token', label: 'SOV Tokens', description: 'Pay with your token balance' },
-            { value: 'hybrid', label: 'Hybrid Payment', description: 'Combine tokens + card' }
-          ].map((method) => (
-            <div
-              key={method.value}
-              onClick={() => setPaymentMethod(method.value as any)}
-              className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                paymentMethod === method.value
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-blue-300'
-              }`}
-            >
-              <h4 className="font-medium text-gray-900">{method.label}</h4>
-              <p className="text-sm text-gray-600 mt-1">{method.description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Payment Summary */}
-      <div className="bg-gray-50 rounded-lg p-6 mb-8">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Booking Summary</h3>
-        <div className="space-y-3">
-          {selectedOutbound && (
-            <div className="flex justify-between">
-              <span>Outbound Flight ({selectedOutbound.flightNumber})</span>
-              <span>{selectedOutbound.price.base.toLocaleString()} VND</span>
-            </div>
-          )}
-          {selectedReturn && (
-            <div className="flex justify-between">
-              <span>Return Flight ({selectedReturn.flightNumber})</span>
-              <span>{selectedReturn.price.base.toLocaleString()} VND</span>
-            </div>
-          )}
-          {bonusTokenPercentage > 0 && (
-            <div className="flex justify-between text-purple-600">
-              <span>Bonus Token Package ({bonusTokenPercentage}%)</span>
-              <span>+{Math.floor(calculateTotalPrice() * (bonusTokenPercentage / 400)).toLocaleString()} VND</span>
-            </div>
-          )}
-          <div className="border-t border-gray-300 pt-3">
-            <div className="flex justify-between font-bold text-lg">
-              <span>Total Amount</span>
-              <span>{(calculateTotalPrice() + Math.floor(calculateTotalPrice() * (bonusTokenPercentage / 400))).toLocaleString()} VND</span>
-            </div>
-          </div>
-          <div className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-3 mt-4">
-            <div className="flex justify-between items-center">
-              <span className="font-medium">SOV Tokens You'll Earn</span>
-              <span className="text-lg font-bold text-purple-600">
-                {calculateTotalTokens()} tokens
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex space-x-4">
-        <button
-          onClick={() => setCurrentStep('passengers')}
-          className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-3 px-6 rounded-lg transition-colors"
-        >
-          Back to Passengers
-        </button>
-        <button
-          onClick={processBooking}
-          disabled={isLoading}
-          className="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
-        >
-          {isLoading ? (
-            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-          ) : (
-            <>
-              <CheckCircleIcon className="h-5 w-5" />
-              <span>Complete Booking</span>
-            </>
-          )}
-        </button>
-      </div>
-    </div>
-  );
 
   return (
     <Layout>
@@ -809,41 +709,265 @@ export default function VietjetBooking() {
                   
                   <div className="space-y-4 mb-8">
                     <h3 className="text-lg font-medium text-gray-900">Outbound Flights</h3>
+                    
+                    {/* Bonus Display */}
+                    <InlineBonusDisplay
+                      serviceType="vietjet"
+                      amount={searchResults.flights[0]?.price.base || 0}
+                      category="flights"
+                      position="top"
+                      size="medium"
+                    />
+                    
                     {searchResults.flights.map(flight => renderFlightCard(flight, 'outbound'))}
                   </div>
 
+                  {/* Selection Status */}
+                  {selectedOutbound && (
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                          <CheckCircleIcon className="w-5 h-5 text-green-600" />
+                        </div>
+                        <div>
+                          <h4 className="text-lg font-semibold text-green-800">Flight Selected!</h4>
+                          <p className="text-sm text-green-700">
+                            {selectedOutbound.airline} {selectedOutbound.flightNumber} - {selectedOutbound.departure.airport.code} to {selectedOutbound.arrival.airport.code}
+                          </p>
+                          <p className="text-sm text-green-600">
+                            {selectedOutbound.price.base.toLocaleString()} VND • {selectedOutbound.sovTokens.standard} SOV tokens
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Continue Button */}
+                  {selectedOutbound && (
+                    <div className="bg-white rounded-xl shadow-lg p-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-lg font-medium text-gray-900">Selected Flight</h3>
+                          <p className="text-sm text-gray-600">
+                            {selectedOutbound.airline} {selectedOutbound.flightNumber} - {selectedOutbound.departure.airport.code} to {selectedOutbound.arrival.airport.code}
+                          </p>
+                          <p className="text-sm text-blue-600 font-medium">
+                            {selectedOutbound.price.base.toLocaleString()} VND • {selectedOutbound.sovTokens.standard} SOV tokens
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => setCurrentStep('details')}
+                          className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center space-x-2"
+                        >
+                          <span>Continue to Details</span>
+                          <ArrowRightIcon className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 
               {currentStep === 'details' && (
                 <div className="bg-white rounded-xl shadow-lg p-8">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Flight Details</h2>
-                  {/* Flight details summary would go here */}
-                  <button
-                    onClick={proceedToPassengers}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg"
-                  >
-                    Continue to Passenger Info
-                  </button>
+                  
+                  {selectedOutbound && (
+                    <div className="space-y-6">
+                      {/* Flight Information */}
+                      <div className="bg-gray-50 rounded-lg p-6">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Selected Flight</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <h4 className="font-medium text-gray-900 mb-2">Departure</h4>
+                            <div className="space-y-1">
+                              <p className="text-2xl font-bold text-gray-900">{selectedOutbound.departure.time}</p>
+                              <p className="text-lg font-medium text-gray-700">{selectedOutbound.departure.airport.code}</p>
+                              <p className="text-sm text-gray-600">{selectedOutbound.departure.airport.city}</p>
+                              <p className="text-sm text-gray-500">{selectedOutbound.departure.date}</p>
+                            </div>
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-gray-900 mb-2">Arrival</h4>
+                            <div className="space-y-1">
+                              <p className="text-2xl font-bold text-gray-900">{selectedOutbound.arrival.time}</p>
+                              <p className="text-lg font-medium text-gray-700">{selectedOutbound.arrival.airport.code}</p>
+                              <p className="text-sm text-gray-600">{selectedOutbound.arrival.airport.city}</p>
+                              <p className="text-sm text-gray-500">{selectedOutbound.arrival.date}</p>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="mt-4 pt-4 border-t border-gray-200">
+                          <div className="flex justify-between items-center">
+                            <div>
+                              <p className="text-sm text-gray-600">Flight Duration</p>
+                              <p className="font-medium">{selectedOutbound.duration}</p>
+                            </div>
+                            <div>
+                              <p className="text-sm text-gray-600">Aircraft</p>
+                              <p className="font-medium">{selectedOutbound.aircraft}</p>
+                            </div>
+                            <div>
+                              <p className="text-sm text-gray-600">Cabin Class</p>
+                              <p className="font-medium capitalize">{selectedOutbound.cabin}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Pricing Information */}
+                      <div className="bg-blue-50 rounded-lg p-6">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Pricing & Tokens</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <h4 className="font-medium text-gray-900 mb-2">Price Breakdown</h4>
+                            <div className="space-y-2">
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">Base Fare:</span>
+                                <span className="font-medium">{selectedOutbound.price.breakdown.baseFare.toLocaleString()} VND</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">Taxes:</span>
+                                <span className="font-medium">{selectedOutbound.price.breakdown.taxes.toLocaleString()} VND</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">Fees:</span>
+                                <span className="font-medium">{selectedOutbound.price.breakdown.fees.toLocaleString()} VND</span>
+                              </div>
+                              <div className="flex justify-between border-t pt-2">
+                                <span className="font-semibold text-gray-900">Total:</span>
+                                <span className="font-bold text-blue-600">{selectedOutbound.price.base.toLocaleString()} VND</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-gray-900 mb-2">SOV Tokens Earned</h4>
+                            <div className="space-y-2">
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">Standard:</span>
+                                <span className="font-medium text-purple-600">{selectedOutbound.sovTokens.standard} SOV</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">ATHENA Prime:</span>
+                                <span className="font-medium text-purple-600">{selectedOutbound.sovTokens.prime} SOV</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Baggage & Amenities */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="bg-green-50 rounded-lg p-4">
+                          <h4 className="font-medium text-gray-900 mb-2">Baggage Allowance</h4>
+                          <div className="space-y-1">
+                            <p className="text-sm text-gray-600">Carry-on: {selectedOutbound.baggage.carry}</p>
+                            <p className="text-sm text-gray-600">Checked: {selectedOutbound.baggage.checked}</p>
+                          </div>
+                        </div>
+                        <div className="bg-purple-50 rounded-lg p-4">
+                          <h4 className="font-medium text-gray-900 mb-2">Amenities</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {selectedOutbound.amenities.map((amenity, index) => (
+                              <span key={index} className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">
+                                {amenity}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex space-x-4 mt-8">
+                    <button
+                      onClick={() => setCurrentStep('results')}
+                      className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
+                    >
+                      <ArrowLeftIcon className="w-5 h-5" />
+                      <span>Back to Flights</span>
+                    </button>
+                    <button
+                      onClick={proceedToPassengers}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
+                    >
+                      <span>Continue to Passenger Info</span>
+                      <ArrowRightIcon className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
               )}
 
               {currentStep === 'passengers' && renderPassengerForm()}
-              {currentStep === 'payment' && renderPaymentForm()}
+              {currentStep === 'payment' && (
+                <FlightBookingPayment
+                  selectedOutbound={selectedOutbound}
+                  selectedReturn={selectedReturn}
+                  passengers={passengers}
+                  bonusTokenPercentage={bonusTokenPercentage}
+                  setBonusTokenPercentage={setBonusTokenPercentage}
+                  calculateTotalPrice={calculateTotalPrice}
+                  calculateTotalTokens={calculateTotalTokens}
+                  sovTokenAmount={sovTokenAmount}
+                  setCurrentStep={(step: any) => setCurrentStep(step)}
+                  onBookingSuccess={() => setCurrentStep('confirmation')}
+                />
+              )}
 
               {currentStep === 'confirmation' && (
-                <div className="bg-white rounded-xl shadow-lg p-8 text-center">
-                  <CheckCircleIcon className="h-16 w-16 text-green-600 mx-auto mb-4" />
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Booking Confirmed!</h2>
-                  <p className="text-gray-600 mb-6">
-                    Your flight has been successfully booked. You will receive a confirmation email shortly.
-                  </p>
-                  <button
-                    onClick={() => setCurrentStep('search')}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg"
-                  >
-                    Book Another Flight
-                  </button>
+                <div className="bg-white rounded-xl shadow-lg p-8">
+                  <div className="text-center mb-8">
+                    <CheckCircleIcon className="h-16 w-16 text-green-600 mx-auto mb-4" />
+                    <h2 className="text-2xl font-bold text-gray-900 mb-4">Booking Confirmed!</h2>
+                    <p className="text-gray-600 mb-6">
+                      Your flight has been successfully booked. You will receive a confirmation email shortly.
+                    </p>
+                  </div>
+
+                  {/* Booking Summary */}
+                  {selectedOutbound && (
+                    <div className="bg-gray-50 rounded-lg p-6 mb-6">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">Booking Summary</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <h4 className="font-medium text-gray-900 mb-2">Flight Details</h4>
+                          <div className="space-y-1 text-sm">
+                            <p><span className="text-gray-600">Flight:</span> {selectedOutbound.airline} {selectedOutbound.flightNumber}</p>
+                            <p><span className="text-gray-600">Route:</span> {selectedOutbound.departure.airport.code} → {selectedOutbound.arrival.airport.code}</p>
+                            <p><span className="text-gray-600">Date:</span> {selectedOutbound.departure.date}</p>
+                            <p><span className="text-gray-600">Time:</span> {selectedOutbound.departure.time} - {selectedOutbound.arrival.time}</p>
+                            <p><span className="text-gray-600">Duration:</span> {selectedOutbound.duration}</p>
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className="font-medium text-gray-900 mb-2">Passenger & Payment</h4>
+                          <div className="space-y-1 text-sm">
+                            <p><span className="text-gray-600">Passengers:</span> {passengers.length}</p>
+                            <p><span className="text-gray-600">Total Price:</span> {selectedOutbound.price.base.toLocaleString()} VND</p>
+                            <p><span className="text-gray-600">SOV Tokens Used:</span> {sovTokenAmount}</p>
+                            <p><span className="text-gray-600">SOV Tokens Earned:</span> {selectedOutbound.sovTokens.standard}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Action Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <button
+                      onClick={() => setCurrentStep('search')}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+                    >
+                      Book Another Flight
+                    </button>
+                    <button
+                      onClick={() => window.location.href = '/transactions'}
+                      className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-3 px-6 rounded-lg transition-colors"
+                    >
+                      View Transaction History
+                    </button>
+                  </div>
                 </div>
               )}
             </div>

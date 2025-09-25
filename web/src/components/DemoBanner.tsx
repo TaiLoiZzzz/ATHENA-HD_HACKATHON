@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   BeakerIcon, 
@@ -8,16 +8,17 @@ import {
   InformationCircleIcon,
   SparklesIcon
 } from '@heroicons/react/24/outline';
+import { useNotification } from '@/hooks/useNotification';
 
 interface DemoBannerProps {
   onDismiss?: () => void;
 }
 
 const DemoBanner: React.FC<DemoBannerProps> = ({ onDismiss }) => {
-  const [isVisible, setIsVisible] = useState(true);
+  const { isVisible, dismiss } = useNotification('DEMO_BANNER_DISMISSED');
 
   const handleDismiss = () => {
-    setIsVisible(false);
+    dismiss();
     onDismiss?.();
   };
 

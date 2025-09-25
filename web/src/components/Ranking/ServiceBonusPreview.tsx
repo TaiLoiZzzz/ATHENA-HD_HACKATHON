@@ -37,13 +37,20 @@ export default function ServiceBonusPreview({
       setBonus(bonusData);
     } catch (error) {
       console.error('Failed to fetch service bonus:', error);
-      // Fallback for demo
+      // Enhanced fallback with realistic bonus calculation
+      const baseTokens = Math.floor(amount / 10000); // 1 SOV = 10,000 VND
+      const userRank = 'Diamond'; // Mock current rank
+      const multiplier = 2.0; // Diamond multiplier
+      const bonusAmount = Math.floor(baseTokens * (multiplier - 1));
+      
       setBonus({
         success: true,
-        userRank: 'Silver',
-        bonusAmount: 10,
-        message: '🎉 Bạn sẽ nhận được 10 SOV với rank Silver!',
-        multiplier: 1.2
+        userRank: userRank,
+        bonusAmount: bonusAmount,
+        baseAmount: baseTokens,
+        totalAmount: baseTokens + bonusAmount,
+        message: `🎉 Bạn sẽ nhận được ${baseTokens + bonusAmount} SOV với rank ${userRank}!`,
+        multiplier: multiplier
       });
     } finally {
       setLoading(false);
@@ -91,10 +98,11 @@ export default function ServiceBonusPreview({
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className={`inline-flex items-center space-x-2 px-3 py-1 bg-gradient-to-r ${getRankColor(bonus.userRank)} text-white rounded-full text-sm font-medium ${className}`}
+        className={`inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r ${getRankColor(bonus.userRank)} text-white rounded-full text-sm font-bold shadow-lg ${className}`}
       >
         <SparklesIcon className="w-4 h-4" />
-        <span>{getRankIcon(bonus.userRank)} +{formatBonus(bonus.bonusAmount)} SOV</span>
+        <span>{getRankIcon(bonus.userRank)} +{formatBonus(bonus.totalAmount || bonus.bonusAmount)} SOV</span>
+        <span className="text-xs opacity-80">({bonus.multiplier}x)</span>
       </motion.div>
     );
   }
@@ -103,40 +111,59 @@ export default function ServiceBonusPreview({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`bg-gradient-to-br from-green-50 to-blue-50 border border-green-200 rounded-lg p-4 ${className}`}
+      className={`bg-gradient-to-br from-green-50 to-blue-50 border-2 border-green-300 rounded-xl p-6 shadow-lg ${className}`}
     >
-      <div className="flex items-start space-x-3">
+      <div className="flex items-start space-x-4">
         <div className="flex-shrink-0">
-          <div className={`w-10 h-10 bg-gradient-to-r ${getRankColor(bonus.userRank)} rounded-full flex items-center justify-center text-white text-lg`}>
-            <GiftIcon className="w-5 h-5" />
+          <div className={`w-12 h-12 bg-gradient-to-r ${getRankColor(bonus.userRank)} rounded-full flex items-center justify-center text-white text-xl shadow-lg`}>
+            <GiftIcon className="w-6 h-6" />
           </div>
         </div>
         
         <div className="flex-1 min-w-0">
-          <div className="flex items-center space-x-2 mb-1">
-            <h4 className="text-sm font-semibold text-green-800">
-              {getRankIcon(bonus.userRank)} Bonus {bonus.userRank}
+          <div className="flex items-center space-x-3 mb-2">
+            <h4 className="text-lg font-bold text-green-800">
+              {getRankIcon(bonus.userRank)} {bonus.userRank} Bonus
             </h4>
-            <span className="text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">
-              {bonus.multiplier}x
+            <span className="text-sm text-white bg-gradient-to-r from-green-500 to-blue-500 px-3 py-1 rounded-full font-bold">
+              {bonus.multiplier}x Multiplier
             </span>
           </div>
           
-          <p className="text-lg font-bold text-green-700">
-            +{formatBonus(bonus.bonusAmount)} SOV
-          </p>
+          <div className="space-y-2">
+            <div className="flex items-center space-x-4">
+              <div>
+                <p className="text-sm text-gray-600">Base Reward</p>
+                <p className="text-lg font-semibold text-gray-800">{formatBonus(bonus.baseAmount || Math.floor(bonus.bonusAmount / (bonus.multiplier - 1)))} SOV</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Bonus</p>
+                <p className="text-lg font-semibold text-green-600">+{formatBonus(bonus.bonusAmount)} SOV</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Total</p>
+                <p className="text-2xl font-bold text-green-700">{formatBonus(bonus.totalAmount || bonus.bonusAmount)} SOV</p>
+              </div>
+            </div>
+          </div>
           
-          <p className="text-xs text-green-600 mt-1">
-            {bonus.message || `Bạn sẽ nhận được ${formatBonus(bonus.bonusAmount)} SOV với rank ${bonus.userRank}!`}
+          <p className="text-sm text-green-600 mt-3 font-medium">
+            {bonus.message || `🎉 Bạn sẽ nhận được ${formatBonus(bonus.totalAmount || bonus.bonusAmount)} SOV với rank ${bonus.userRank}!`}
           </p>
         </div>
       </div>
       
-      {/* Bonus details */}
-      <div className="mt-3 pt-3 border-t border-green-200">
-        <div className="flex items-center justify-between text-xs text-green-600">
-          <span>Service: {serviceType.toUpperCase()}</span>
-          <span>Amount: {amount.toLocaleString()} VND</span>
+      {/* Enhanced bonus details */}
+      <div className="mt-4 pt-4 border-t border-green-200">
+        <div className="grid grid-cols-2 gap-4 text-sm">
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600">Service:</span>
+            <span className="font-semibold text-gray-800">{serviceType.toUpperCase()}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600">Amount:</span>
+            <span className="font-semibold text-gray-800">{amount.toLocaleString()} VND</span>
+          </div>
         </div>
       </div>
     </motion.div>

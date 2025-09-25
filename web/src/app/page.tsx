@@ -68,7 +68,7 @@ const FeatureCard = ({ icon: Icon, title, description, gradient, delay = 0 }: Fe
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  return (
+  const cardContent = (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 50, scale: 0.9 }}
@@ -115,6 +115,17 @@ const FeatureCard = ({ icon: Icon, title, description, gradient, delay = 0 }: Fe
       </div>
     </motion.div>
   );
+
+  // Add link for Smart Commerce
+  if (title === "Smart Commerce") {
+    return (
+      <Link href="/ai-dashboard">
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return cardContent;
 };
 
 const StatItem = ({ value, label, delay = 0 }: StatItemProps) => {
@@ -340,7 +351,7 @@ export default function HomePage() {
               transition={{ delay: 0.8, duration: 0.8 }}
             >
               {isAuthenticated ? (
-                <Link href="">
+                <Link href="/sovico">
                   <motion.button
                     className="group relative px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl font-semibold text-white text-lg shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 overflow-hidden"
                     whileHover={{ scale: 1.05, y: -2 }}

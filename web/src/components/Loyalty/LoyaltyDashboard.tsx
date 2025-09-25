@@ -130,7 +130,6 @@ export default function LoyaltyDashboard({ className = '' }: LoyaltyDashboardPro
     switch (service) {
       case 'hdbank': return 'HDBank';
       case 'vietjet': return 'Vietjet';
-      case 'marketplace': return 'Marketplace';
       case 'sovico': return 'Sovico';
       default: return service;
     }

@@ -18,6 +18,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
 import Layout from '@/components/Layout/Layout';
 import SOVWallet from '@/components/SOVWallet/SOVWallet';
+import InlineBonusDisplay from '@/components/UserTier/InlineBonusDisplay';
 import { safeGet, safeFormatCurrency, safeFormatPercentage, safeFormatRange, safeStringUpper } from '@/utils/safeDisplay';
 
 interface LoanProduct {
@@ -328,6 +329,15 @@ export default function HDBankPage() {
                 })}
               </div>
             </motion.div>
+
+            {/* Bonus Display */}
+            <InlineBonusDisplay
+              serviceType="hdbank"
+              amount={1000000}
+              category="banking"
+              position="top"
+              size="medium"
+            />
 
             {/* Products Grid */}
             <motion.div

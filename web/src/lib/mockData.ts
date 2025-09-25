@@ -1,7 +1,7 @@
 // Mock Data for ATHENA Platform
 // This file contains all mock data for the frontend-only version
 
-import { User, TokenBalance, Transaction, MarketplaceOrder, CartItem, CartSummary } from './api';
+import { User, TokenBalance, Transaction, CartItem, CartSummary } from './api';
 
 // Mock Users with diverse ranks and SOV token balances
 export const mockUsers: User[] = [
@@ -416,35 +416,6 @@ export const mockTransactions: Transaction[] = [
   }
 ];
 
-// Mock Marketplace Orders
-export const mockMarketplaceOrders: MarketplaceOrder[] = [
-  {
-    id: 'order_001',
-    orderType: 'buy',
-    amount: 1000,
-    filledAmount: 500,
-    remainingAmount: 500,
-    pricePerToken: 0.85,
-    totalValue: 850,
-    status: 'active',
-    expiresAt: '2024-02-01T00:00:00Z',
-    createdAt: '2024-01-15T10:00:00Z',
-    updatedAt: '2024-01-15T10:00:00Z'
-  },
-  {
-    id: 'order_002',
-    orderType: 'sell',
-    amount: 2000,
-    filledAmount: 0,
-    remainingAmount: 2000,
-    pricePerToken: 0.92,
-    totalValue: 1840,
-    status: 'active',
-    expiresAt: '2024-02-05T00:00:00Z',
-    createdAt: '2024-01-14T15:30:00Z',
-    updatedAt: '2024-01-14T15:30:00Z'
-  }
-];
 
 // Mock Cart Items
 export const mockCartItems: CartItem[] = [
@@ -605,6 +576,464 @@ export const mockVietjetFlights = [
     },
     amenities: ['WiFi', 'Entertainment', 'Meal'],
     cancellationPolicy: 'Free cancellation up to 24 hours before departure'
+  },
+  // Thêm các chuyến bay mẫu mới để test
+  {
+    id: 'VJ004',
+    flightNumber: 'VJ101',
+    airline: 'VietJet Air',
+    aircraft: 'A320',
+    departure: {
+      airport: { code: 'SGN', name: 'Tan Son Nhat International Airport', city: 'Ho Chi Minh City', country: 'Vietnam' },
+      time: '06:30',
+      date: '2024-02-18'
+    },
+    arrival: {
+      airport: { code: 'HAN', name: 'Noi Bai International Airport', city: 'Hanoi', country: 'Vietnam' },
+      time: '08:30',
+      date: '2024-02-18'
+    },
+    duration: '2h 00m',
+    price: {
+      base: 1300000,
+      currency: 'VND',
+      breakdown: {
+        baseFare: 1000000,
+        taxes: 200000,
+        fees: 100000
+      }
+    },
+    sovTokens: {
+      standard: 130,
+      prime: 195
+    },
+    cabin: 'economy',
+    availableSeats: 52,
+    baggage: {
+      carry: '7kg',
+      checked: '20kg'
+    },
+    amenities: ['WiFi', 'Entertainment'],
+    cancellationPolicy: 'Free cancellation up to 24 hours before departure'
+  },
+  {
+    id: 'VJ005',
+    flightNumber: 'VJ202',
+    airline: 'VietJet Air',
+    aircraft: 'A321',
+    departure: {
+      airport: { code: 'HAN', name: 'Noi Bai International Airport', city: 'Hanoi', country: 'Vietnam' },
+      time: '12:15',
+      date: '2024-02-22'
+    },
+    arrival: {
+      airport: { code: 'DAD', name: 'Da Nang International Airport', city: 'Da Nang', country: 'Vietnam' },
+      time: '13:45',
+      date: '2024-02-22'
+    },
+    duration: '1h 30m',
+    price: {
+      base: 1100000,
+      currency: 'VND',
+      breakdown: {
+        baseFare: 900000,
+        taxes: 150000,
+        fees: 50000
+      }
+    },
+    sovTokens: {
+      standard: 110,
+      prime: 165
+    },
+    cabin: 'economy',
+    availableSeats: 38,
+    baggage: {
+      carry: '7kg',
+      checked: '20kg'
+    },
+    amenities: ['WiFi', 'Entertainment', 'Meal'],
+    cancellationPolicy: 'Free cancellation up to 24 hours before departure'
+  },
+  {
+    id: 'VJ006',
+    flightNumber: 'VJ303',
+    airline: 'VietJet Air',
+    aircraft: 'A320',
+    departure: {
+      airport: { code: 'DAD', name: 'Da Nang International Airport', city: 'Da Nang', country: 'Vietnam' },
+      time: '18:45',
+      date: '2024-02-28'
+    },
+    arrival: {
+      airport: { code: 'SGN', name: 'Tan Son Nhat International Airport', city: 'Ho Chi Minh City', country: 'Vietnam' },
+      time: '20:15',
+      date: '2024-02-28'
+    },
+    duration: '1h 30m',
+    price: {
+      base: 1400000,
+      currency: 'VND',
+      breakdown: {
+        baseFare: 1100000,
+        taxes: 200000,
+        fees: 100000
+      }
+    },
+    sovTokens: {
+      standard: 140,
+      prime: 210
+    },
+    cabin: 'economy',
+    availableSeats: 25,
+    baggage: {
+      carry: '7kg',
+      checked: '20kg'
+    },
+    amenities: ['WiFi', 'Entertainment', 'Meal'],
+    cancellationPolicy: 'Free cancellation up to 24 hours before departure'
+  },
+  {
+    id: 'VJ007',
+    flightNumber: 'VJ404',
+    airline: 'VietJet Air',
+    aircraft: 'A321',
+    departure: {
+      airport: { code: 'SGN', name: 'Tan Son Nhat International Airport', city: 'Ho Chi Minh City', country: 'Vietnam' },
+      time: '15:30',
+      date: '2024-03-01'
+    },
+    arrival: {
+      airport: { code: 'PQC', name: 'Phu Quoc International Airport', city: 'Phu Quoc', country: 'Vietnam' },
+      time: '16:45',
+      date: '2024-03-01'
+    },
+    duration: '1h 15m',
+    price: {
+      base: 1600000,
+      currency: 'VND',
+      breakdown: {
+        baseFare: 1300000,
+        taxes: 200000,
+        fees: 100000
+      }
+    },
+    sovTokens: {
+      standard: 160,
+      prime: 240
+    },
+    cabin: 'economy',
+    availableSeats: 42,
+    baggage: {
+      carry: '7kg',
+      checked: '20kg'
+    },
+    amenities: ['WiFi', 'Entertainment', 'Meal'],
+    cancellationPolicy: 'Free cancellation up to 24 hours before departure'
+  },
+  {
+    id: 'VJ008',
+    flightNumber: 'VJ505',
+    airline: 'VietJet Air',
+    aircraft: 'A320',
+    departure: {
+      airport: { code: 'HAN', name: 'Noi Bai International Airport', city: 'Hanoi', country: 'Vietnam' },
+      time: '09:20',
+      date: '2024-03-05'
+    },
+    arrival: {
+      airport: { code: 'CXR', name: 'Cam Ranh International Airport', city: 'Nha Trang', country: 'Vietnam' },
+      time: '11:00',
+      date: '2024-03-05'
+    },
+    duration: '1h 40m',
+    price: {
+      base: 1700000,
+      currency: 'VND',
+      breakdown: {
+        baseFare: 1400000,
+        taxes: 200000,
+        fees: 100000
+      }
+    },
+    sovTokens: {
+      standard: 170,
+      prime: 255
+    },
+    cabin: 'economy',
+    availableSeats: 35,
+    baggage: {
+      carry: '7kg',
+      checked: '20kg'
+    },
+    amenities: ['WiFi', 'Entertainment', 'Meal'],
+    cancellationPolicy: 'Free cancellation up to 24 hours before departure'
+  },
+  {
+    id: 'VJ009',
+    flightNumber: 'VJ606',
+    airline: 'VietJet Air',
+    aircraft: 'A321',
+    departure: {
+      airport: { code: 'SGN', name: 'Tan Son Nhat International Airport', city: 'Ho Chi Minh City', country: 'Vietnam' },
+      time: '11:10',
+      date: '2024-03-08'
+    },
+    arrival: {
+      airport: { code: 'BKK', name: 'Suvarnabhumi Airport', city: 'Bangkok', country: 'Thailand' },
+      time: '13:40',
+      date: '2024-03-08'
+    },
+    duration: '2h 30m',
+    price: {
+      base: 2500000,
+      currency: 'VND',
+      breakdown: {
+        baseFare: 2000000,
+        taxes: 300000,
+        fees: 200000
+      }
+    },
+    sovTokens: {
+      standard: 250,
+      prime: 375
+    },
+    cabin: 'economy',
+    availableSeats: 28,
+    baggage: {
+      carry: '7kg',
+      checked: '20kg'
+    },
+    amenities: ['WiFi', 'Entertainment', 'Meal'],
+    cancellationPolicy: 'Free cancellation up to 24 hours before departure'
+  },
+  {
+    id: 'VJ010',
+    flightNumber: 'VJ707',
+    airline: 'VietJet Air',
+    aircraft: 'A320',
+    departure: {
+      airport: { code: 'SGN', name: 'Tan Son Nhat International Airport', city: 'Ho Chi Minh City', country: 'Vietnam' },
+      time: '22:30',
+      date: '2024-03-12'
+    },
+    arrival: {
+      airport: { code: 'SIN', name: 'Changi Airport', city: 'Singapore', country: 'Singapore' },
+      time: '01:15',
+      date: '2024-03-13'
+    },
+    duration: '2h 45m',
+    price: {
+      base: 2800000,
+      currency: 'VND',
+      breakdown: {
+        baseFare: 2200000,
+        taxes: 400000,
+        fees: 200000
+      }
+    },
+    sovTokens: {
+      standard: 280,
+      prime: 420
+    },
+    cabin: 'economy',
+    availableSeats: 18,
+    baggage: {
+      carry: '7kg',
+      checked: '20kg'
+    },
+    amenities: ['WiFi', 'Entertainment', 'Meal'],
+    cancellationPolicy: 'Free cancellation up to 24 hours before departure'
+  }
+];
+
+// Mock Vikkibank Products
+export const mockVikkibankProducts = [
+  {
+    id: 'VK001',
+    type: 'savings',
+    name: 'Vikkibank Smart Savings',
+    description: 'Smart savings account with high interest rate',
+    interestRate: {
+      annual: 8.5,
+      sovToken: 6.0
+    },
+    minDeposit: 1000000,
+    maxDeposit: 1000000000,
+    features: ['High interest rate', 'Flexible withdrawal', 'SOV token integration'],
+    benefits: ['Free transfers', 'Free ATM card', 'SOV token benefits'],
+    userTier: 'standard',
+    applicableRate: { annual: 8.5, sovToken: 6.0 }
+  },
+  {
+    id: 'VK002',
+    type: 'current',
+    name: 'Vikkibank Business Account',
+    description: 'Business account with multiple utilities',
+    interestRate: {
+      annual: 6.0,
+      sovToken: 4.5
+    },
+    minDeposit: 5000000,
+    maxDeposit: 5000000000,
+    features: ['Business management', 'Unlimited transfers', 'Financial reports'],
+    benefits: ['24/7 support', 'Low transaction fees', 'SOV ecosystem integration'],
+    userTier: 'premium',
+    applicableRate: { annual: 6.0, sovToken: 4.5 }
+  },
+  {
+    id: 'VK003',
+    type: 'investment',
+    name: 'Vikkibank Investment Fund',
+    description: 'Investment fund with stable returns',
+    interestRate: {
+      annual: 12.0,
+      sovToken: 9.0
+    },
+    minDeposit: 10000000,
+    maxDeposit: 10000000000,
+    features: ['Safe investment', 'High returns', 'Professional management'],
+    benefits: ['Free consultation', 'Regular reports', 'Flexible capital withdrawal'],
+    userTier: 'vip',
+    applicableRate: { annual: 12.0, sovToken: 9.0 }
+  },
+  {
+    id: 'VK004',
+    type: 'loan',
+    name: 'Vikkibank Personal Loan',
+    description: 'Personal loan with preferential interest rate',
+    interestRate: {
+      annual: 15.0,
+      sovToken: 12.0
+    },
+    minAmount: 5000000,
+    maxAmount: 500000000,
+    features: ['Low interest rate', 'Quick approval', 'Flexible repayment'],
+    benefits: ['No collateral', 'Low fees', 'SOV holder benefits'],
+    userTier: 'standard',
+    applicableRate: { annual: 15.0, sovToken: 12.0 }
+  },
+  {
+    id: 'VK005',
+    type: 'credit_card',
+    name: 'Vikkibank Platinum Card',
+    description: 'Premium credit card with many benefits',
+    annualFee: {
+      fiat: 2000000,
+      sovToken: 400
+    },
+    creditLimit: {
+      min: 20000000,
+      max: 200000000
+    },
+    cashback: 2.5,
+    rewards: 5.0,
+    features: ['High cashback', 'Travel benefits', 'Free insurance'],
+    benefits: ['Lounge access', 'Concierge service', 'SOV rewards'],
+    userTier: 'platinum',
+    applicableCashback: 2.5,
+    applicableRewards: 5.0
+  }
+];
+
+// Mock Vikkibank Services
+export const mockVikkibankServices = [
+  {
+    id: 'VKS001',
+    name: 'Fast Transfer',
+    description: 'Instant transfer 24/7',
+    fee: {
+      fiat: 5000,
+      sovToken: 1
+    },
+    processingTime: 'Instant',
+    features: ['Unlimited', 'High security', 'Free for SOV holders']
+  },
+  {
+    id: 'VKS002',
+    name: 'Bill Payment',
+    description: 'Pay various types of bills',
+    fee: {
+      fiat: 3000,
+      sovToken: 1
+    },
+    processingTime: '1-2 minutes',
+    features: ['Electricity, water, internet', 'Insurance', 'Tuition fees']
+  },
+  {
+    id: 'VKS003',
+    name: 'Online Shopping',
+    description: 'Secure online shopping payment',
+    fee: {
+      fiat: 0,
+      sovToken: 0
+    },
+    processingTime: 'Instant',
+    features: ['High security', 'Refund', 'SOV integration']
+  },
+  {
+    id: 'VKS004',
+    name: 'Stock Investment',
+    description: 'Professional stock brokerage',
+    fee: {
+      fiat: 0.15,
+      sovToken: 0.1
+    },
+    processingTime: '1 day',
+    features: ['Low fees', 'Professional consultation', 'SOV rewards']
+  }
+];
+
+// Mock Vikkibank Transactions
+export const mockVikkibankTransactions = [
+  {
+    id: 'VKT001',
+    type: 'deposit',
+    amount: 5000000,
+    description: 'Deposit to savings account',
+    accountType: 'savings',
+    status: 'completed',
+    createdAt: '2024-01-15T10:30:00Z',
+    sovTokens: 100
+  },
+  {
+    id: 'VKT002',
+    type: 'transfer',
+    amount: -2000000,
+    description: 'Transfer to friend',
+    accountType: 'current',
+    status: 'completed',
+    createdAt: '2024-01-14T14:20:00Z',
+    sovTokens: 40
+  },
+  {
+    id: 'VKT003',
+    type: 'payment',
+    amount: -500000,
+    description: 'Electricity bill payment',
+    accountType: 'current',
+    status: 'completed',
+    createdAt: '2024-01-13T09:15:00Z',
+    sovTokens: 10
+  },
+  {
+    id: 'VKT004',
+    type: 'investment',
+    amount: 10000000,
+    description: 'Vikkibank fund investment',
+    accountType: 'investment',
+    status: 'active',
+    createdAt: '2024-01-12T16:45:00Z',
+    sovTokens: 200
+  },
+  {
+    id: 'VKT005',
+    type: 'withdrawal',
+    amount: -1000000,
+    description: 'ATM withdrawal',
+    accountType: 'current',
+    status: 'completed',
+    createdAt: '2024-01-11T11:30:00Z',
+    sovTokens: 20
   }
 ];
 
@@ -712,26 +1141,26 @@ export const mockAnalytics = {
 // Mock Ranking Data
 export const mockRankingData = {
   userRank: {
-    name: 'Gold',
-    level: 3,
-    icon: '🥇',
-    color: '#FFD700',
-    bonusMultiplier: 1.5,
-    benefits: ['Priority support', 'Exclusive rewards', 'Higher earning rates'],
-    minPoints: 5000,
-    maxPoints: 9999
+    name: 'Diamond',
+    level: 4,
+    icon: '💎',
+    color: '#B9F2FF',
+    bonusMultiplier: 2.0,
+    benefits: ['Concierge service', 'Maximum earning rates', 'Premium rewards', 'VIP support'],
+    minPoints: 10000,
+    maxPoints: 99999
   },
   rank: {
-    name: 'Gold',
-    level: 3,
-    icon: '🥇',
-    color: '#FFD700',
-    bonusMultiplier: 1.5,
-    benefits: ['Priority support', 'Exclusive rewards', 'Higher earning rates'],
-    minPoints: 5000,
-    maxPoints: 9999
+    name: 'Diamond',
+    level: 4,
+    icon: '💎',
+    color: '#B9F2FF',
+    bonusMultiplier: 2.0,
+    benefits: ['Concierge service', 'Maximum earning rates', 'Premium rewards', 'VIP support'],
+    minPoints: 10000,
+    maxPoints: 99999
   },
-  totalPoints: 7500,
+  totalPoints: 15000,
   totalSpent: 15000000,
   totalTransactions: 25,
   servicesUsed: {
@@ -748,8 +1177,8 @@ export const mockRankingData = {
     'Resort Lover',
     'Insurance Guardian'
   ],
-  nextRankPoints: 10000,
-  bonusMultiplier: 1.5
+  nextRankPoints: 20000,
+  bonusMultiplier: 2.0
 };
 
 // Mock Leaderboard
@@ -879,7 +1308,6 @@ export const getMockDataByUserId = (userId: string) => {
     transactions: userTransactions,
     cartItems: mockCartItems,
     cartSummary: mockCartSummary,
-    marketplaceOrders: mockMarketplaceOrders,
     analytics: mockAnalytics,
     ranking: mockRankingData,
     leaderboard: mockLeaderboard,

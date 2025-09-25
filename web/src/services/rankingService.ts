@@ -238,9 +238,6 @@ class RankingService {
           id: 'hist_003',
           activityType: 'achievement_unlocked',
           pointsEarned: 200,
-          serviceType: 'marketplace',
-          transaction: { description: 'First marketplace purchase', amount: 200 },
-          metadata: { achievement: 'Marketplace Explorer' },
           createdAt: '2024-01-13T09:15:00Z'
         }
       ].slice(0, limit);

@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import AIWidget from '@/components/AI/AIWidget';
 
 interface LayoutProps {
   children: ReactNode;
@@ -30,6 +31,7 @@ export default function Layout({ children }: LayoutProps) {
         {children}
       </main>
       <Footer />
+      <AIWidget />
     </div>
   );
 }

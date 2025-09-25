@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Layout from '@/components/Layout/Layout';
+import InlineBonusDisplay from '@/components/UserTier/InlineBonusDisplay';
 import { 
   UsersIcon,
   CreditCardIcon, 
@@ -99,6 +100,15 @@ export default function AdminDashboard() {
             <p className="mt-2 text-gray-600">
               Welcome back, {user?.fullName || 'Administrator'}
             </p>
+            
+            {/* Bonus Display */}
+            <InlineBonusDisplay
+              serviceType="admin"
+              amount={1000000}
+              category="management"
+              position="top"
+              size="large"
+            />
           </div>
 
           {/* Navigation Tabs */}

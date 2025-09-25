@@ -179,6 +179,30 @@ class SOVTokenService {
     });
   }
 
+  // Award tokens after service completion (separate from immediate payment rewards)
+  awardServiceTokens(amount: number, description: string, serviceType?: string, metadata?: any): SOVTransaction {
+    const wallet = this.getWallet();
+    const updatedWallet: SOVWallet = {
+      ...wallet,
+      balance: wallet.balance + amount,
+      totalEarned: wallet.totalEarned + amount,
+      netTokens: wallet.netTokens + amount,
+      lastUpdated: new Date().toISOString()
+    };
+
+    this.saveWallet(updatedWallet);
+
+    return this.addTransaction({
+      type: 'earn',
+      amount,
+      description,
+      serviceType,
+      serviceReferenceId: metadata?.referenceId,
+      status: 'completed',
+      metadata
+    });
+  }
+
   // Spend SOV tokens
   spendTokens(amount: number, description: string, serviceType?: string, metadata?: any): SOVTransaction {
     const wallet = this.getWallet();

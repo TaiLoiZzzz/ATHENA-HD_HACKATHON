@@ -15,6 +15,9 @@ import {
 } from '@heroicons/react/24/outline';
 import Layout from '@/components/Layout/Layout';
 import { useAuth } from '@/contexts/AuthContext';
+import InlineBonusDisplay from '@/components/UserTier/InlineBonusDisplay';
+import { apiService } from '@/lib/api';
+import { sovTokenService } from '@/services/sovTokenService';
 import toast from 'react-hot-toast';
 
 interface Transaction {
@@ -65,37 +68,36 @@ export default function TransactionsPage() {
 
   const fetchTransactions = async () => {
     try {
-      const token = document.cookie.split('; ')
-        .find(row => row.startsWith('authToken='))
-        ?.split('=')[1];
-
-      const params = new URLSearchParams({
-        page: pagination.page.toString(),
-        limit: pagination.limit.toString(),
-        ...(filter.type !== 'all' && { type: filter.type }),
-        ...(filter.status !== 'all' && { status: filter.status }),
-        ...(filter.serviceType !== 'all' && { serviceType: filter.serviceType })
-      });
-
-      const response = await fetch(`/api/transactions?${params}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setTransactions(data.transactions || []);
-        setPagination(prev => ({
-          ...prev,
-          total: data.pagination?.total || 0,
-          totalPages: data.pagination?.totalPages || 0
-        }));
+      // Get transactions from localStorage using sovTokenService
+      const allTransactions = sovTokenService.getTransactions();
+      
+      // Filter transactions based on current filters
+      let filteredTransactions = allTransactions;
+      
+      if (filter.type !== 'all') {
+        filteredTransactions = filteredTransactions.filter(t => t.type === filter.type);
       }
+      
+      if (filter.status !== 'all') {
+        filteredTransactions = filteredTransactions.filter(t => t.status === filter.status);
+      }
+      
+      if (filter.serviceType !== 'all') {
+        filteredTransactions = filteredTransactions.filter(t => t.serviceType === filter.serviceType);
+      }
+      
+      // Sort by date (newest first)
+      filteredTransactions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      
+      setTransactions(filteredTransactions);
+      setPagination(prev => ({
+        ...prev,
+        total: filteredTransactions.length,
+        totalPages: Math.ceil(filteredTransactions.length / pagination.limit)
+      }));
     } catch (error) {
       console.error('Failed to fetch transactions:', error);
-      toast.error('Không thể tải lịch sử giao dịch');
+      toast.error('Failed to load transaction history');
     } finally {
       setLoading(false);
     }
@@ -103,21 +105,41 @@ export default function TransactionsPage() {
 
   const fetchAnalytics = async () => {
     try {
-      const token = document.cookie.split('; ')
-        .find(row => row.startsWith('authToken='))
-        ?.split('=')[1];
-
-      const response = await fetch(`/api/transactions/analytics?period=${filter.period}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+      // Get transactions from localStorage using sovTokenService
+      const allTransactions = sovTokenService.getTransactions();
+      
+      const totalEarned = allTransactions
+        .filter(t => t.type === 'earn' && t.status === 'completed')
+        .reduce((sum, t) => sum + Math.abs(t.amount), 0);
+        
+      const totalSpent = allTransactions
+        .filter(t => t.type === 'spend' && t.status === 'completed')
+        .reduce((sum, t) => sum + Math.abs(t.amount), 0);
+        
+      const netGain = totalEarned - totalSpent;
+      const transactionCount = allTransactions.length;
+      const averageTransaction = transactionCount > 0 ? (totalEarned + totalSpent) / transactionCount : 0;
+      
+      // Find most common service type
+      const serviceCounts = allTransactions.reduce((acc, t) => {
+        if (t.serviceType) {
+          acc[t.serviceType] = (acc[t.serviceType] || 0) + 1;
         }
+        return acc;
+      }, {} as Record<string, number>);
+      
+      const topServiceType = Object.keys(serviceCounts).reduce((a, b) => 
+        serviceCounts[a] > serviceCounts[b] ? a : b, 'general'
+      );
+      
+      setAnalytics({
+        totalEarned,
+        totalSpent,
+        netGain,
+        transactionCount,
+        averageTransaction,
+        topServiceType
       });
-
-      if (response.ok) {
-        const data = await response.json();
-        setAnalytics(data.analytics || null);
-      }
     } catch (error) {
       console.error('Failed to fetch analytics:', error);
     }
@@ -155,10 +177,6 @@ export default function TransactionsPage() {
         return <ArrowUpIcon className="w-5 h-5 text-red-600" />;
       case 'transfer':
         return <CurrencyDollarIcon className="w-5 h-5 text-blue-600" />;
-      case 'marketplace_buy':
-        return <ArrowUpIcon className="w-5 h-5 text-purple-600" />;
-      case 'marketplace_sell':
-        return <ArrowDownIcon className="w-5 h-5 text-orange-600" />;
       default:
         return <DocumentTextIcon className="w-5 h-5 text-gray-600" />;
     }
@@ -172,10 +190,6 @@ export default function TransactionsPage() {
         return 'text-red-600';
       case 'transfer':
         return 'text-blue-600';
-      case 'marketplace_buy':
-        return 'text-purple-600';
-      case 'marketplace_sell':
-        return 'text-orange-600';
       default:
         return 'text-gray-600';
     }
@@ -200,7 +214,6 @@ export default function TransactionsPage() {
       'hdbank': 'HD Bank',
       'resort': 'Resort',
       'insurance': 'Bảo hiểm',
-      'marketplace': 'Marketplace'
     };
     return names[serviceType as keyof typeof names] || serviceType;
   };
@@ -239,9 +252,18 @@ export default function TransactionsPage() {
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 flex items-center">
               <DocumentTextIcon className="w-8 h-8 mr-3" />
-              Lịch sử giao dịch
+              Transaction History
             </h1>
-            <p className="text-gray-600 mt-2">Theo dõi tất cả giao dịch SOV token của bạn</p>
+            <p className="text-gray-600 mt-2">Track all your SOV token transactions</p>
+            
+            {/* Bonus Display */}
+            <InlineBonusDisplay
+              serviceType="transactions"
+              amount={500000}
+              category="history"
+              position="top"
+              size="medium"
+            />
           </div>
 
           {/* Analytics Cards */}
@@ -346,8 +368,6 @@ export default function TransactionsPage() {
                   <option value="earn">Nhận token</option>
                   <option value="spend">Chi tiêu</option>
                   <option value="transfer">Chuyển khoản</option>
-                  <option value="marketplace_buy">Mua marketplace</option>
-                  <option value="marketplace_sell">Bán marketplace</option>
                 </select>
               </div>
 
@@ -391,7 +411,6 @@ export default function TransactionsPage() {
                   <option value="hdbank">HD Bank</option>
                   <option value="resort">Resort</option>
                   <option value="insurance">Bảo hiểm</option>
-                  <option value="marketplace">Marketplace</option>
                 </select>
               </div>
             </div>
@@ -455,7 +474,7 @@ export default function TransactionsPage() {
                       <div className="flex items-center space-x-4">
                         <div className="text-right">
                           <p className={`text-lg font-bold ${getTransactionColor(transaction.type)}`}>
-                            {transaction.type === 'earn' || transaction.type === 'marketplace_sell' ? '+' : '-'}
+                            {transaction.type === 'earn' ? '+' : '-'}
                             {formatTokens(Math.abs(transaction.amount))} SOV
                           </p>
                         </div>

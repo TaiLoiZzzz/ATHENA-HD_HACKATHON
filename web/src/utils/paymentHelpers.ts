@@ -226,7 +226,7 @@ export const isValidAmount = (amount: any): boolean => {
 
 // Service type validation
 export const isValidServiceType = (serviceType: any): boolean => {
-  const validTypes = ['vietjet', 'hdbank', 'resort', 'insurance', 'marketplace', 'cart'];
+  const validTypes = ['vietjet', 'hdbank', 'resort', 'insurance', 'cart'];
   return typeof serviceType === 'string' && validTypes.includes(serviceType);
 };
 

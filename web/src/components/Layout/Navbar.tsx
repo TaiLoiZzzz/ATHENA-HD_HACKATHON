@@ -25,14 +25,17 @@ import { useAuth } from '@/contexts/AuthContext';
 import { clsx } from 'clsx';
 import SOVWallet from '@/components/SOVWallet/SOVWallet';
 import UserRankDisplay from '@/components/Ranking/UserRankDisplay';
+import TierBadge from '@/components/UserTier/TierBadge';
 
 // Navigation items
 const navigation = [
-  { name: 'Marketplace', href: '/marketplace', icon: BuildingStorefrontIcon },
   { name: 'Flights', href: '/vietjet', icon: ShoppingBagIcon },
   { name: 'Banking', href: '/hdbank', icon: CurrencyDollarIcon },
+  { name: 'Vikkibank', href: '/vikkibank', icon: BuildingStorefrontIcon },
   { name: 'Sovico', href: '/sovico', icon: SparklesIcon },
   { name: 'Web3', href: '/web3', icon: SparklesIcon },
+  { name: 'AI Dashboard', href: '/ai-dashboard', icon: SparklesIcon },
+  { name: 'AI Test', href: '/ai-test', icon: SparklesIcon },
 ];
 
 // User menu items
@@ -129,6 +132,19 @@ export default function Navbar({ className = '' }: NavbarProps) {
 
                     {/* User Rank Display */}
                     <UserRankDisplay compact={true} />
+                    
+                    {/* Tier Badge */}
+                    <TierBadge
+                      tier={{
+                        name: 'Diamond',
+                        level: 4,
+                        color: 'blue',
+                        bonusMultiplier: 2.0
+                      }}
+                      points={15000}
+                      compact={true}
+                      showBonus={true}
+                    />
 
                     {/* SOV Wallet Quick Access */}
                     <div className="relative">

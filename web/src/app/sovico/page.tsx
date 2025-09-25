@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import {
   CreditCardIcon,
   BuildingLibraryIcon,
+  BuildingOfficeIcon,
   PaperAirplaneIcon,
   ShoppingCartIcon,
   SparklesIcon,
@@ -19,6 +20,7 @@ import {
 import Layout from '@/components/Layout/Layout';
 import SOVWallet from '@/components/SOVWallet/SOVWallet';
 import LoyaltyDashboard from '@/components/Loyalty/LoyaltyDashboard';
+import InlineBonusDisplay from '@/components/UserTier/InlineBonusDisplay';
 import { useAuth } from '@/contexts/AuthContext';
 import api from '@/lib/api';
 import toast from 'react-hot-toast';
@@ -72,15 +74,15 @@ const services: Service[] = [
     sovBenefits: ['10% SOV discount', 'Free baggage upgrade', 'Lounge access'],
   },
   {
-    id: 'marketplace',
-    name: 'SOV Marketplace',
-    icon: ShoppingCartIcon,
-    description: 'Trade SOV tokens, exclusive deals',
-    href: '/marketplace',
-    color: 'text-purple-600',
-    bgColor: 'bg-purple-50',
-    features: ['Token Trading', 'P2P Exchange', 'Exclusive Products', 'NFT Marketplace'],
-    sovBenefits: ['Zero trading fees', 'Early access', 'VIP deals'],
+    id: 'vikkibank',
+    name: 'Vikkibank',
+    icon: BuildingOfficeIcon,
+    description: 'Digital banking with SOV integration',
+    href: '/vikkibank',
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-50',
+    features: ['Digital Banking', 'SOV Integration', 'Smart Savings', 'Investment Funds'],
+    sovBenefits: ['Higher interest rates', 'Zero fees', 'VIP banking'],
   },
 ];
 
@@ -105,7 +107,7 @@ const unifiedOffers: UnifiedOffer[] = [
     id: 'prime-ecosystem',
     title: 'ATHENA Prime Ecosystem',
     description: 'Unlock premium benefits across all Sovico services',
-    services: ['HDBank', 'Vietjet', 'Marketplace'],
+    services: ['HDBank', 'Vietjet', 'Vikkibank'],
     originalPrice: 2000000,
     sovPrice: 180,
     discount: 10,
@@ -325,6 +327,16 @@ export default function SovicoPage() {
               className="space-y-4"
             >
               <h3 className="text-xl font-semibold text-gray-900">All Services</h3>
+              
+              {/* Bonus Display */}
+              <InlineBonusDisplay
+                serviceType="sovico"
+                amount={500000}
+                category="resort"
+                position="top"
+                size="medium"
+              />
+              
               <div className="grid gap-6">
                 {services.map((service, index) => (
                   <motion.div

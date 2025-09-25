@@ -24,6 +24,7 @@ import {
 import { CheckCircleIcon, SparklesIcon } from '@heroicons/react/24/solid';
 import Layout from '@/components/Layout/Layout';
 import { useAuth } from '@/contexts/AuthContext';
+import InlineBonusDisplay from '@/components/UserTier/InlineBonusDisplay';
 import UserRankDisplay from '@/components/Ranking/UserRankDisplay';
 import RankBadge from '@/components/Ranking/RankBadge';
 import { UserRanking, rankingService } from '@/services/rankingService';
@@ -262,6 +263,15 @@ export default function ProfilePage() {
               Profile
             </h1>
             <p className="text-gray-600 mt-2">Quản lý thông tin cá nhân và theo dõi hoạt động của bạn</p>
+            
+            {/* Bonus Display */}
+            <InlineBonusDisplay
+              serviceType="profile"
+              amount={200000}
+              category="personal"
+              position="top"
+              size="medium"
+            />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

@@ -12,6 +12,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { sovTokenService } from '@/services/sovTokenService';
 import { useAuth } from '@/contexts/AuthContext';
+import { SessionStorageManager, SessionStorageKeys } from '@/utils/sessionStorage';
 
 const SOVTokenBanner: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -27,12 +28,17 @@ const SOVTokenBanner: React.FC = () => {
       setWalletBalance(wallet.balance);
       setMembershipTier(stats.membershipTier);
       
-      // Show banner if user has good balance
-      if (wallet.balance > 1000) {
+      // Show banner if user has good balance and not dismissed
+      if (wallet.balance > 1000 && SessionStorageManager.shouldShow(SessionStorageKeys.SOV_TOKEN_BANNER_DISMISSED)) {
         setIsVisible(true);
       }
     }
   }, [user]);
+
+  const handleDismiss = () => {
+    setIsVisible(false);
+    SessionStorageManager.markAsShown(SessionStorageKeys.SOV_TOKEN_BANNER_DISMISSED);
+  };
 
   if (!isVisible || !user) return null;
 
@@ -94,7 +100,7 @@ const SOVTokenBanner: React.FC = () => {
                 <div className="text-sm text-white/80">SOV Tokens</div>
               </div>
               <button
-                onClick={() => setIsVisible(false)}
+                onClick={handleDismiss}
                 className="p-2 hover:bg-white/20 rounded-full transition-colors duration-200"
                 aria-label="Dismiss banner"
               >

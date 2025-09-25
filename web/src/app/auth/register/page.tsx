@@ -101,9 +101,9 @@ export default function RegisterPage() {
         
         toast.success('🎉 Đăng ký thành công! Bạn nhận được 10 SOV token chào mừng! 🎁');
         
-        // Redirect to marketplace
+        // Redirect to dashboard
         setTimeout(() => {
-          router.push('/marketplace');
+          router.push('/');
         }, 1000);
       } else {
         throw new Error(data.error || 'Đăng ký thất bại');
@@ -419,7 +419,7 @@ export default function RegisterPage() {
               <h4 className="text-sm font-medium text-gray-900 mb-2">Tính năng ATHENA Platform:</h4>
               <ul className="text-sm text-gray-600 space-y-1">
                 <li>• Earn SOV tokens từ mọi giao dịch</li>
-                <li>• Trade tokens trên marketplace</li>
+                <li>• Sử dụng dịch vụ ngân hàng Vikkibank</li>
                 <li>• Ưu đãi độc quyền từ Vietjet, HDBank</li>
                 <li>• Hệ thống loyalty với 6 hạng thành viên</li>
                 <li>• Web3 wallet integration</li>

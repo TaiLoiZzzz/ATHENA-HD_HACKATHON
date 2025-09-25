@@ -4,11 +4,13 @@ import {
   mockUsers, 
   mockTokenBalances, 
   mockTransactions, 
-  mockMarketplaceOrders, 
   mockCartItems, 
   mockCartSummary,
   mockVietjetFlights,
   mockHDBankProducts,
+  mockVikkibankProducts,
+  mockVikkibankServices,
+  mockVikkibankTransactions,
   mockSovicoResorts,
   mockInsuranceProducts,
   mockAnalytics,
@@ -60,19 +62,6 @@ export interface Transaction {
   createdAt: string;
 }
 
-export interface MarketplaceOrder {
-  id: string;
-  orderType: 'buy' | 'sell';
-  amount: number;
-  filledAmount: number;
-  remainingAmount: number;
-  pricePerToken: number;
-  totalValue: number;
-  status: string;
-  expiresAt?: string;
-  createdAt: string;
-  updatedAt: string;
-}
 
 export interface CartItem {
   id: string;
@@ -321,113 +310,10 @@ class ApiService {
     }
   }
 
-  // Marketplace
-  async getMarketplaceOverview() {
-    try {
-      await simulateApiDelay(400);
-      
-      return {
-        totalVolume: 2500000,
-        totalOrders: 150,
-        averagePrice: 0.89,
-        priceChange: 2.5,
-        marketCap: 50000000,
-        volume24h: 125000
-      };
-    } catch (error: any) {
-      throw this.handleError(error);
-    }
-  }
 
-  async getOrderBook(limit = 20) {
-    try {
-      await simulateApiDelay(300);
-      
-      const buyOrders = mockMarketplaceOrders.filter(o => o.orderType === 'buy').slice(0, limit / 2);
-      const sellOrders = mockMarketplaceOrders.filter(o => o.orderType === 'sell').slice(0, limit / 2);
-      
-      return {
-        buyOrders,
-        sellOrders,
-        totalBuyOrders: buyOrders.length,
-        totalSellOrders: sellOrders.length
-      };
-    } catch (error: any) {
-      throw this.handleError(error);
-    }
-  }
 
-  async createMarketplaceOrder(orderData: any) {
-    try {
-      await simulateApiDelay(600);
-      
-      const newOrder: MarketplaceOrder = {
-        id: generateId('order'),
-        orderType: orderData.orderType,
-        amount: orderData.amount,
-        filledAmount: 0,
-        remainingAmount: orderData.amount,
-        pricePerToken: orderData.pricePerToken,
-        totalValue: orderData.amount * orderData.pricePerToken,
-        status: 'active',
-        expiresAt: orderData.expiresAt,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      };
-      
-      return { order: newOrder };
-    } catch (error: any) {
-      throw this.handleError(error);
-    }
-  }
 
-  async getUserOrders(status = 'active', page = 1, limit = 20) {
-    try {
-      await simulateApiDelay(400);
-      
-      let filteredOrders = mockMarketplaceOrders;
-      if (status !== 'all') {
-        filteredOrders = mockMarketplaceOrders.filter(o => o.status === status);
-      }
-      
-      const startIndex = (page - 1) * limit;
-      const endIndex = startIndex + limit;
-      const paginatedOrders = filteredOrders.slice(startIndex, endIndex);
-      
-      return {
-        orders: paginatedOrders,
-        total: filteredOrders.length,
-        page,
-        limit,
-        totalPages: Math.ceil(filteredOrders.length / limit)
-      };
-    } catch (error: any) {
-      throw this.handleError(error);
-    }
-  }
 
-  async cancelOrder(orderId: string) {
-    try {
-      await simulateApiDelay(500);
-      
-      const order = mockMarketplaceOrders.find(o => o.id === orderId);
-      if (!order) {
-        throw new Error('Order not found');
-      }
-      
-      if (order.status !== 'active') {
-        throw new Error('Order cannot be cancelled');
-      }
-      
-      return {
-        orderId,
-        status: 'cancelled',
-        cancelledAt: new Date().toISOString()
-      };
-    } catch (error: any) {
-      throw this.handleError(error);
-    }
-  }
 
   // Shopping Cart
   async getCart() {
@@ -696,21 +582,21 @@ class ApiService {
       return {
         data: {
           currentTier: {
-            name: 'Gold',
-            level: '3',
-            icon: '🥇',
-            color: '#F59E0B',
-            bonusMultiplier: 1.5,
-            benefits: ['Priority support', 'Exclusive offers', '1.5x earning bonus'],
-            minPoints: 5000,
-            maxPoints: 9999,
-            points: 7500,
-            multiplier: 1.5
+            name: 'Diamond',
+            level: '4',
+            icon: '💎',
+            color: '#B9F2FF',
+            bonusMultiplier: 2.0,
+            benefits: ['Concierge service', 'Maximum earning rates', 'Premium rewards', 'VIP support'],
+            minPoints: 10000,
+            maxPoints: 99999,
+            points: 15000,
+            multiplier: 2.0
           },
-          points: 7500,
-          nextTierPoints: 2500,
+          points: 15000,
+          nextTierPoints: 5000,
           totalSpent: 150000,
-          benefits: ['Priority support', 'Exclusive offers', '1.5x earning bonus'],
+          benefits: ['Concierge service', 'Maximum earning rates', 'Premium rewards', 'VIP support'],
           recentActivity: [
             { 
               service: 'flight', 
@@ -1111,6 +997,161 @@ class ApiService {
       };
       
       return mockUserServices;
+    } catch (error: any) {
+      throw this.handleError(error);
+    }
+  }
+
+  // Vikkibank specific methods
+  async getVikkibankProducts(type?: string) {
+    try {
+      await simulateApiDelay(400);
+      
+      let filteredProducts = mockVikkibankProducts;
+      if (type) {
+        filteredProducts = mockVikkibankProducts.filter(p => p.type === type);
+      }
+      
+      return {
+        products: filteredProducts,
+        total: filteredProducts.length,
+        type
+      };
+    } catch (error: any) {
+      throw this.handleError(error);
+    }
+  }
+
+  async getVikkibankServices() {
+    try {
+      await simulateApiDelay(300);
+      
+      return {
+        services: mockVikkibankServices,
+        total: mockVikkibankServices.length
+      };
+    } catch (error: any) {
+      throw this.handleError(error);
+    }
+  }
+
+  async getVikkibankTransactions(page = 1, limit = 20, type?: string) {
+    try {
+      await simulateApiDelay(400);
+      
+      let filteredTransactions = mockVikkibankTransactions;
+      if (type) {
+        filteredTransactions = mockVikkibankTransactions.filter(t => t.type === type);
+      }
+      
+      const startIndex = (page - 1) * limit;
+      const endIndex = startIndex + limit;
+      const paginatedTransactions = filteredTransactions.slice(startIndex, endIndex);
+      
+      return {
+        transactions: paginatedTransactions,
+        total: filteredTransactions.length,
+        page,
+        limit,
+        totalPages: Math.ceil(filteredTransactions.length / limit)
+      };
+    } catch (error: any) {
+      throw this.handleError(error);
+    }
+  }
+
+  async getVikkibankMyServices() {
+    try {
+      await simulateApiDelay(400);
+      
+      const mockUserServices = {
+        accounts: [
+          {
+            id: 'acc_001',
+            account_type: 'savings',
+            account_number: 'VK1234567890',
+            balance: 15000000,
+            interest_rate: 8.5,
+            status: 'active'
+          },
+          {
+            id: 'acc_002',
+            account_type: 'current',
+            account_number: 'VK0987654321',
+            balance: 5000000,
+            interest_rate: 6.0,
+            status: 'active'
+          }
+        ],
+        creditCards: [
+          {
+            id: 'card_001',
+            card_type: 'platinum',
+            card_number: '**** **** **** 1234',
+            credit_limit: 50000000,
+            available_limit: 45000000,
+            status: 'active'
+          }
+        ],
+        loans: [
+          {
+            id: 'loan_001',
+            loan_type: 'personal',
+            amount: 20000000,
+            term_months: 12,
+            interest_rate: 12.0,
+            monthly_payment: 1800000,
+            remaining_balance: 15000000,
+            status: 'active'
+          }
+        ],
+        investments: [
+          {
+            id: 'inv_001',
+            product_type: 'investment_fund',
+            amount: 10000000,
+            current_value: 10800000,
+            expected_return: 800000,
+            risk_level: 'medium',
+            status: 'active'
+          }
+        ],
+        summary: {
+          totalAccounts: 2,
+          totalBalance: 20000000,
+          activeCreditCards: 1,
+          activeLoans: 1,
+          activeInvestments: 1
+        }
+      };
+      
+      return mockUserServices;
+    } catch (error: any) {
+      throw this.handleError(error);
+    }
+  }
+
+  async processVikkibankPayment(paymentData: any) {
+    try {
+      await simulateApiDelay(800);
+      
+      // Use SOV token service for real payment processing
+      const payment = sovTokenService.processPayment(
+        paymentData.sovTokens,
+        'vikkibank',
+        paymentData.serviceId || generateId('vks'),
+        `Vikkibank ${paymentData.serviceName} - ${paymentData.description}`
+      );
+      
+      return {
+        transactionId: payment.id,
+        serviceId: payment.serviceId,
+        status: 'completed',
+        amount: paymentData.amount,
+        sovTokens: paymentData.sovTokens,
+        description: paymentData.description,
+        processedAt: payment.completedAt
+      };
     } catch (error: any) {
       throw this.handleError(error);
     }

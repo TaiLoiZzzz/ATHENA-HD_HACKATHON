@@ -22,6 +22,7 @@ import api from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
 import Layout from '@/components/Layout/Layout';
+import InlineBonusDisplay from '@/components/UserTier/InlineBonusDisplay';
 
 interface Web3Profile {
   wallet_address: string;
@@ -217,8 +218,6 @@ export default function Web3Page() {
     const typeMap: { [key: string]: string } = {
       'earn_tokens': 'Token Earning',
       'redeem_tokens': 'Token Redemption',
-      'marketplace_buy_order': 'Buy Order',
-      'marketplace_sell_order': 'Sell Order',
       'stake': 'Token Staking',
       'unstake': 'Token Unstaking'
     };
@@ -322,6 +321,17 @@ export default function Web3Page() {
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Manage your digital assets, interact with smart contracts, and explore the future of decentralized finance
             </p>
+            
+            {/* Bonus Display */}
+            <div className="mt-8">
+              <InlineBonusDisplay
+                serviceType="web3"
+                amount={500000}
+                category="defi"
+                position="top"
+                size="large"
+              />
+            </div>
           </motion.div>
 
           {/* Navigation Tabs */}

@@ -12,7 +12,6 @@ const footerLinks = {
   platform: [
     { name: 'Dashboard', href: '/dashboard' },
     { name: 'Services', href: '/services' },
-    { name: 'Marketplace', href: '/marketplace' },
     { name: 'Transactions', href: '/transactions' },
   ],
   services: [

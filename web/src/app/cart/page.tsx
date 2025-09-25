@@ -14,6 +14,7 @@ import {
 } from '@heroicons/react/24/outline';
 import Layout from '@/components/Layout/Layout';
 import { useAuth } from '@/contexts/AuthContext';
+import InlineBonusDisplay from '@/components/UserTier/InlineBonusDisplay';
 import EnhancedPayment from '@/components/Payment/EnhancedPayment';
 import toast from 'react-hot-toast';
 
@@ -264,6 +265,15 @@ export default function CartPage() {
                 {cartSummary.totalItems} sản phẩm - {formatCurrency(cartSummary.totalAmount)}
               </p>
             )}
+            
+            {/* Bonus Display */}
+            <InlineBonusDisplay
+              serviceType="cart"
+              amount={cartSummary?.totalAmount || 0}
+              category="shopping"
+              position="top"
+              size="medium"
+            />
           </div>
 
           {cartItems.length === 0 ? (
@@ -420,7 +430,7 @@ export default function CartPage() {
                       </button>
                       
                       <a
-                        href="/marketplace"
+                        href="/vikkibank"
                         className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-medium transition-colors text-center block"
                       >
                         Tiếp tục mua sắm

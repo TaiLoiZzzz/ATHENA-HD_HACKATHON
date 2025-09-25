@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Layout from '@/components/Layout/Layout';
 import LoyaltyTierDisplay from '@/components/Loyalty/LoyaltyTierDisplay';
+import InlineBonusDisplay from '@/components/UserTier/InlineBonusDisplay';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   StarIcon,
@@ -176,6 +177,16 @@ export default function LoyaltyPage() {
           {/* Current User Tier */}
           <div className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Hạng thành viên của bạn</h2>
+            
+            {/* Bonus Display */}
+            <InlineBonusDisplay
+              serviceType="loyalty"
+              amount={1000000}
+              category="membership"
+              position="top"
+              size="large"
+            />
+            
             <LoyaltyTierDisplay onTierUpdate={setCurrentTierInfo} />
           </div>
 
@@ -373,10 +384,10 @@ export default function LoyaltyPage() {
                   Sản phẩm ngân hàng
                 </a>
                 <a
-                  href="/marketplace"
+                  href="/vikkibank"
                   className="bg-white text-purple-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors"
                 >
-                  Token Marketplace
+                  Vikkibank
                 </a>
               </div>
             </motion.div>

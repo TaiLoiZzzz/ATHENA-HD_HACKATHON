@@ -20,7 +20,7 @@ export interface UserPreferences {
 
 export interface Recommendation {
   id: string;
-  type: 'flight' | 'banking' | 'resort' | 'insurance' | 'marketplace';
+  type: 'flight' | 'banking' | 'resort' | 'insurance';
   title: string;
   description: string;
   price?: number;
@@ -211,7 +211,7 @@ class PersonalizationService {
       console.error('Failed to get dashboard layout:', error);
       return {
         layout: 'grid',
-        widgets: ['portfolio', 'transactions', 'marketplace', 'ranking'],
+        widgets: ['portfolio', 'transactions', 'ranking'],
         customizations: {
           theme: 'dark',
           language: 'vi',
@@ -268,7 +268,6 @@ class PersonalizationService {
         recommendations: [
           'Consider upgrading to ATHENA Prime for better rewards',
           'Try our new insurance products for comprehensive coverage',
-          'Explore our marketplace for token trading opportunities'
         ]
       };
     } catch (error) {
