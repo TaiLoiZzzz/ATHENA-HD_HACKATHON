@@ -1,121 +1,112 @@
-# ATHENA Platform - Super-App Micro-Economy Ecosystem
+# 🚀 ATHENA Platform - Web3 Super-App Ecosystem
 
-ATHENA is a comprehensive super-app platform for Sovico Group that transforms traditional reward points into tradable SOV-Tokens using blockchain technology. The platform provides a unified interface for booking flights (Vietjet), banking services (HDBank), resort accommodations, and insurance products, all while earning and trading SOV-Tokens in a P2P marketplace.
+## 🌐 Demo Access
 
-## 🏗️ Architecture Overview
+**Live Demo:** https://athena-hd-hackathon-ivf3.vercel.app/
 
-### Core Pillars
-1. **Blockchain Integration** - Hyperledger Fabric-based SOV-Token system
-2. **Super-App Interface** - React Native cross-platform mobile application
-3. **Unified Commerce** - Single cart checkout across multiple services
-4. **P2P Marketplace** - Token trading with 1.5% transaction fees
+**Demo Credentials:**
+- **Email:** demo@athena.com
+- **Password:** demo123
 
-### Tech Stack
-- **Backend**: Node.js, Express.js (Monolithic architecture)
-- **Database**: PostgreSQL with structured transaction data
-- **Blockchain**: Hyperledger Fabric with Solidity-style smart contracts
-- **Frontend**: React Native with React Navigation
-- **Real-time**: Socket.IO for live updates
-- **Authentication**: JWT-based with secure token management
+---
+
+## 📋 Table of Contents
+
+- [Overview](#overview)
+- [Quick Start](#quick-start)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Setup Instructions](#setup-instructions)
+- [API Documentation](#api-documentation)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+
+## 🎯 Overview
+
+ATHENA is a comprehensive Web3 super-app platform for Sovico Group that transforms traditional reward points into tradable SOV-Tokens using blockchain technology. The platform provides a unified interface for booking flights (Vietjet), banking services (HDBank), resort accommodations, and insurance products, all while earning and trading SOV-Tokens in a P2P marketplace.
+
+### 🌟 Key Highlights
+
+- **Unified Ecosystem**: Single platform for flights, banking, resorts, and insurance
+- **SOV Token Economy**: Earn, stake, and trade tokens across all services
+- **Web3 Integration**: MetaMask wallet support and blockchain transactions
+- **AI-Powered**: Smart recommendations and personalized experiences
+- **Cross-Service Rewards**: Earn tokens from every interaction
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- PostgreSQL (v12 or higher)
-- React Native development environment
-- Android Studio or Xcode for mobile development
 
-### Backend Setup
+- Node.js (v18 or higher)
+- PostgreSQL (v14 or higher)
+- Docker (optional, for containerized setup)
+- Git
 
-1. **Install Dependencies**
+### 1. Clone Repository
+
 ```bash
-npm install
+git clone https://github.com/your-org/athena-hd-hackathon.git
+cd athena-hd-hackathon
 ```
 
-2. **Database Configuration**
+### 2. Environment Setup
+
 ```bash
-# Create PostgreSQL database
+# Copy environment template
+cp env.example .env
+
+# Edit environment variables
+nano .env
+```
+
+### 3. Database Setup
+
+```bash
+# Using Docker (Recommended)
+docker-compose up -d postgres
+
+# Or install PostgreSQL locally
+# Create database
 createdb athena_db
-
-# Set environment variables
-export DB_HOST=localhost
-export DB_PORT=5432
-export DB_NAME=athena_db
-export DB_USER=athena_user
-export DB_PASSWORD=athena_password
-export JWT_SECRET=your_super_secret_key_change_in_production
 ```
 
-3. **Initialize Database**
+### 4. Backend Setup
+
 ```bash
-npm run setup-db
-```
-
-4. **Start Backend Server**
-```bash
-# Development mode with auto-reload
-npm run dev
-
-# Production mode
-npm start
-```
-
-The backend server will start on `http://localhost:3000`
-
-### Frontend Setup
-
-1. **Navigate to Frontend Directory**
-```bash
-cd frontend
-```
-
-2. **Install Dependencies**
-```bash
+cd backend
 npm install
+npm run setup-db
+npm run dev
 ```
 
-3. **Install iOS Dependencies** (iOS only)
+### 5. Frontend Setup
+
 ```bash
-cd ios && pod install && cd ..
+cd web
+npm install
+npm run dev
 ```
 
-4. **Start Metro Bundler**
-```bash
-npm start
-```
+### 6. Access Application
 
-5. **Run on Device/Simulator**
-```bash
-# Android
-npm run android
+- **Web Application**: http://localhost:3000
+- **API Server**: http://localhost:5000
+- **Database**: localhost:5432
 
-# iOS
-npm run ios
-```
-
-### Blockchain Setup
-
-1. **Initialize Hyperledger Fabric Network** (Simulated)
-```bash
-npm run setup-blockchain
-```
-
-Note: The current implementation includes a blockchain service simulator. In production, this would connect to a real Hyperledger Fabric network.
-
-## 📱 Key Features
+## ✨ Features
 
 ### 🔐 Authentication & User Management
-- JWT-based secure authentication
-- User profile management
+- Secure JWT-based authentication
+- User profile management with avatars
 - ATHENA Prime subscription (1.5x token multiplier)
-- Password reset and security features
+- Multi-factor authentication support
 
-### 💰 SOV-Token System
+### 💰 SOV Token Ecosystem
 - **Earning Rate**: 1 SOV-Token per 10,000 VND spent
 - **ATHENA Prime Bonus**: 1.5x earning multiplier
 - **Service Bonuses**: Resort bookings (1.2x), Insurance (1.1x)
-- **Blockchain Security**: All transactions recorded on Hyperledger Fabric
+- **Staking Rewards**: Up to 18.5% APY
+- **P2P Trading**: Buy/sell tokens with 1.5% platform fee
 
 ### 🛒 Unified Shopping Experience
 - **Multi-Service Cart**: Add items from different services
@@ -123,19 +114,13 @@ Note: The current implementation includes a blockchain service simulator. In pro
 - **Real-time Token Calculation**: See tokens earned before purchase
 - **Order Tracking**: Monitor all bookings in one place
 
-### 📈 P2P Marketplace
-- **Buy/Sell Orders**: Create limit orders for SOV-Tokens
-- **Automatic Matching**: Smart order execution system
-- **Transaction Fees**: 1.5% platform fee on all trades
-- **Real-time Updates**: Live order book and trade notifications
-
 ### 🏢 Service Integrations
 
 #### ✈️ Vietjet Airlines
 - Flight search and booking
 - Real-time availability and pricing
 - Passenger management
-- Booking confirmations and references
+- Booking confirmations
 
 #### 🏦 HDBank Services
 - Savings accounts with competitive rates
@@ -155,190 +140,235 @@ Note: The current implementation includes a blockchain service simulator. In pro
 - Premium calculations
 - Policy management
 
-## 🔧 API Documentation
+### 🤖 AI-Powered Features
+- Personalized recommendations
+- Smart spending insights
+- Dynamic pricing optimization
+- Predictive analytics
+
+### 📱 Web3 Integration
+- MetaMask wallet connection
+- Blockchain transaction support
+- DeFi protocol integration
+- NFT marketplace access
+
+## 🛠️ Tech Stack
+
+### Backend
+- **Runtime**: Node.js with Express.js
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: JWT with bcrypt
+- **Blockchain**: Web3.js with Ethereum integration
+- **Real-time**: Socket.IO
+- **API**: RESTful with OpenAPI documentation
+
+### Frontend
+- **Framework**: Next.js 14 with React 18
+- **Styling**: Tailwind CSS with custom components
+- **State Management**: React Context + Redux Toolkit
+- **Web3**: Ethers.js for blockchain interactions
+- **UI Components**: Custom component library
+- **Charts**: Chart.js for analytics
+
+### Infrastructure
+- **Containerization**: Docker with multi-stage builds
+- **Database**: PostgreSQL with connection pooling
+- **Caching**: Redis for session management
+- **File Storage**: AWS S3 compatible storage
+- **Monitoring**: Winston logging with error tracking
+
+## 📖 Setup Instructions
+
+### Option 1: Docker Setup (Recommended)
+
+```bash
+# Start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+```
+
+### Option 2: Manual Setup
+
+#### Backend Setup
+
+```bash
+cd backend
+
+# Install dependencies
+npm install
+
+# Setup database
+npm run setup-db
+
+# Run migrations
+npm run migrate
+
+# Start development server
+npm run dev
+```
+
+#### Frontend Setup
+
+```bash
+cd web
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+#### Database Setup
+
+```bash
+# Create database
+createdb athena_db
+
+# Run setup scripts
+cd backend/scripts
+node setup-database.js
+node setup-sample-users.js
+```
+
+### Environment Variables
+
+Create `.env` file in project root:
+
+```env
+# Database
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=athena_db
+DB_USER=athena_user
+DB_PASSWORD=athena_password
+
+# JWT
+JWT_SECRET=your_super_secret_key_change_in_production
+JWT_EXPIRES_IN=7d
+
+# Server
+PORT=5000
+NODE_ENV=development
+
+# Blockchain
+ETHEREUM_RPC_URL=https://sepolia.infura.io/v3/your-project-id
+PRIVATE_KEY=your_private_key_for_deployments
+
+# External APIs
+VIETJET_API_KEY=your_vietjet_api_key
+HDBANK_API_KEY=your_hdbank_api_key
+```
+
+## 📚 API Documentation
 
 ### Authentication Endpoints
-```
-POST /api/auth/register    - User registration
-POST /api/auth/login       - User login
-GET  /api/auth/verify      - Token verification
-POST /api/auth/refresh     - Token refresh
+
+```http
+POST /api/auth/register    # User registration
+POST /api/auth/login       # User login
+GET  /api/auth/verify      # Token verification
+POST /api/auth/refresh     # Token refresh
 ```
 
 ### Token Management
-```
-GET  /api/tokens/balance           - Get user token balance
-GET  /api/tokens/transactions      - Transaction history
-POST /api/tokens/calculate-earning - Calculate tokens for purchase
-POST /api/tokens/award            - Award tokens (internal)
-POST /api/tokens/redeem           - Redeem tokens for rewards
+
+```http
+GET  /api/tokens/balance           # Get user token balance
+GET  /api/tokens/transactions      # Transaction history
+POST /api/tokens/calculate-earning # Calculate tokens for purchase
+POST /api/tokens/award            # Award tokens (internal)
+POST /api/tokens/redeem           # Redeem tokens for rewards
 ```
 
 ### Marketplace
-```
-GET  /api/marketplace/overview     - Market statistics
-GET  /api/marketplace/orderbook    - Buy/sell orders
-POST /api/marketplace/orders       - Create new order
-GET  /api/marketplace/my-orders    - User's orders
-DELETE /api/marketplace/orders/:id - Cancel order
-GET  /api/marketplace/trades       - Trading history
-```
 
-### Shopping Cart
-```
-GET    /api/cart           - Get cart contents
-POST   /api/cart/items     - Add item to cart
-PUT    /api/cart/items/:id - Update cart item
-DELETE /api/cart/items/:id - Remove from cart
-DELETE /api/cart           - Clear cart
-POST   /api/cart/checkout  - Unified checkout
+```http
+GET  /api/marketplace/overview     # Market statistics
+GET  /api/marketplace/orderbook    # Buy/sell orders
+POST /api/marketplace/orders       # Create new order
+GET  /api/marketplace/my-orders    # User's orders
+DELETE /api/marketplace/orders/:id # Cancel order
+GET  /api/marketplace/trades       # Trading history
 ```
 
 ### Services
+
+```http
+GET  /api/services/vietjet/flights    # Search flights
+POST /api/services/vietjet/book       # Book flight
+GET  /api/services/hdbank/products    # Banking products
+POST /api/services/hdbank/apply       # Apply for product
+GET  /api/services/resorts            # Search resorts
+POST /api/services/resorts/book       # Book resort
+GET  /api/services/insurance          # Insurance products
+POST /api/services/insurance/purchase # Purchase insurance
 ```
-GET  /api/services/vietjet/flights    - Search flights
-POST /api/services/vietjet/book       - Book flight
-GET  /api/services/hdbank/products    - Banking products
-POST /api/services/hdbank/apply       - Apply for product
-GET  /api/services/resorts            - Search resorts
-POST /api/services/resorts/book       - Book resort
-GET  /api/services/insurance          - Insurance products
-POST /api/services/insurance/purchase - Purchase insurance
-```
-
-## 🎯 Sample User Journeys
-
-### Smart Vacation Journey
-1. **Search & Select**: Find Vietjet flight from Hanoi to Da Nang
-2. **Add Services**: Add resort booking and travel insurance to cart
-3. **Review Cart**: See total cost and estimated SOV-Tokens (150 tokens)
-4. **Checkout**: Single payment for all services
-5. **Earn Tokens**: Receive 150 SOV-Tokens automatically
-6. **Confirmation**: Get booking references for all services
-
-### Monetizing Loyalty Journey
-1. **Check Balance**: View 2,500 SOV-Tokens in wallet
-2. **Market Analysis**: Check current token price (8,500 VND each)
-3. **Create Sell Order**: List 1,000 tokens at 8,600 VND each
-4. **Order Execution**: Automatic matching with buyer
-5. **Receive Payment**: 8,471,000 VND after 1.5% platform fee
-6. **Bank Transfer**: Transfer proceeds to linked HDBank account
-
-## 💾 Database Schema
-
-### Core Tables
-- **users**: User accounts and profiles
-- **token_balances**: SOV-Token balances and statistics
-- **transactions**: All token earning/spending records
-- **marketplace_orders**: Buy/sell orders
-- **marketplace_trades**: Completed trades
-- **shopping_cart**: Multi-service shopping cart
-- **service_bookings**: All service reservations
-
-### Key Relationships
-- Users have one token balance
-- Users can have multiple transactions
-- Users can have multiple marketplace orders
-- Orders can result in multiple trades
-
-## 🔒 Security Features
-
-### Authentication Security
-- JWT tokens with 7-day expiration
-- Bcrypt password hashing (12 rounds)
-- Secure token storage in mobile app
-- Automatic token refresh mechanism
-
-### API Security
-- Helmet.js for HTTP headers
-- CORS protection
-- Request rate limiting
-- Input validation with Joi
-- SQL injection prevention
-
-### Blockchain Security
-- Hyperledger Fabric permissioned network
-- Smart contract validation
-- Transaction immutability
-- Multi-signature requirements
-
-## 📊 Monitoring & Analytics
-
-### Logging
-- Winston-based structured logging
-- Error tracking and alerting
-- Performance monitoring
-- User activity analytics
-
-### Real-time Features
-- Socket.IO for live updates
-- Push notifications for trades
-- Real-time order book updates
-- Instant token earning notifications
-
-## 🧪 Testing
-
-### Run Tests
-```bash
-# Backend unit tests
-npm test
-
-# Frontend tests
-cd frontend && npm test
-
-# Integration tests
-npm run test:integration
-```
-
-### Test Coverage
-- Authentication flows
-- Token earning/spending
-- Marketplace operations
-- Cart and checkout
-- Service integrations
 
 ## 🚀 Deployment
 
-### Production Environment
-```bash
-# Set production environment variables
-export NODE_ENV=production
-export DB_HOST=your-production-db-host
-export JWT_SECRET=your-production-jwt-secret
+### Production Deployment
 
-# Start production server
+```bash
+# Build frontend
+cd web
+npm run build
+
+# Build backend
+cd ../backend
+npm run build
+
+# Start production
 npm start
 ```
 
-### Mobile App Deployment
-```bash
-# Android build
-cd frontend && npx react-native build-android
+### Docker Deployment
 
-# iOS build
-cd frontend && npx react-native build-ios
+```bash
+# Build and start
+docker-compose -f docker-compose.prod.yml up -d
+
+# Scale services
+docker-compose up -d --scale backend=3
 ```
 
-## 🔄 Revenue Streams
+### Environment Configuration
 
-1. **Marketplace Fees**: 1.5% on all SOV-Token trades
-2. **ATHENA Prime**: Premium subscription with enhanced benefits
-3. **Service Commissions**: Revenue sharing with partner services
-4. **Premium Features**: Advanced analytics and priority support
+```bash
+# Production environment
+export NODE_ENV=production
+export DB_HOST=your-production-db-host
+export JWT_SECRET=your-production-jwt-secret
+export ETHEREUM_RPC_URL=your-mainnet-rpc-url
+```
 
-## 🎯 Future Enhancements
+## 🧪 Testing
 
-### Phase 2 Features
-- AI-powered spending insights
-- Dynamic pricing algorithms
-- Advanced portfolio management
-- Cross-border token transfers
+```bash
+# Run all tests
+npm test
 
-### Additional Services
-- Food delivery integration
-- E-commerce marketplace
-- Ride-sharing services
-- Utility bill payments
+# Run backend tests
+cd backend && npm test
+
+# Run frontend tests
+cd web && npm test
+
+# Run integration tests
+npm run test:integration
+```
+
+## 📊 Monitoring
+
+- **Logs**: Winston-based structured logging
+- **Metrics**: Performance monitoring with custom dashboards
+- **Alerts**: Error tracking and notification system
+- **Analytics**: User behavior and transaction analytics
 
 ## 🤝 Contributing
 
@@ -348,6 +378,13 @@ cd frontend && npx react-native build-ios
 4. Push to branch (`git push origin feature/amazing-feature`)
 5. Open Pull Request
 
+### Development Guidelines
+
+- Follow ESLint and Prettier configurations
+- Write tests for new features
+- Update documentation for API changes
+- Use conventional commit messages
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -355,9 +392,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🆘 Support
 
 For technical support or questions:
-- Email: support@athena-platform.com
-- Documentation: https://docs.athena-platform.com
-- Issue Tracker: https://github.com/sovico-group/athena-platform/issues
+- **Email**: support@athena-platform.com
+- **Documentation**: https://docs.athena-platform.com
+- **Issues**: https://github.com/sovico-group/athena-platform/issues
 
 ## 🏢 About Sovico Group
 
@@ -367,5 +404,8 @@ ATHENA is developed by Sovico Group, Vietnam's leading conglomerate with busines
 
 **Built with ❤️ by the Sovico Group Technology Team**
 
-#   A T H E N A - H D _ H A C K A T H O N  
- 
+## 🎯 Demo Credentials Reminder
+
+**Live Demo:** https://athena-hd-hackathon-ivf3.vercel.app/
+- **Email:** demo@athena.com
+- **Password:** demo123
