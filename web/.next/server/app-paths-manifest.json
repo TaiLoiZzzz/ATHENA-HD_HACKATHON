@@ -1,9 +1,4 @@
 {
-  "/not-found": "app/not-found.js",
-  "/sovico/page": "app/sovico/page.js",
-  "/vikkibank/page": "app/vikkibank/page.js",
-  "/ai-dashboard/page": "app/ai-dashboard/page.js",
-  "/hdbank/page": "app/hdbank/page.js",
-  "/vietjet/page": "app/vietjet/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/sovico/page": "app/sovico/page.js"
 }

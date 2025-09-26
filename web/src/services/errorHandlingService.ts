@@ -1,5 +1,5 @@
 // Enhanced error handling service for frontend
-import { transactionErrorHandler, TransactionError, TransactionResponse } from '@/utils/transactionErrorHandler';
+import { transactionErrorHandler, TransactionError, TransactionResponse, TransactionErrorType } from '@/utils/transactionErrorHandler';
 import toast from 'react-hot-toast';
 
 export interface ErrorHandlingConfig {
@@ -224,23 +224,23 @@ class ErrorHandlingService {
 
   // Get retry status for user
   getRetryStatus(userId: string): Array<{ operation: string; attempts: number; maxRetries: number }> {
-    const userRetries = [];
-    for (const [key, attempts] of this.retryAttempts.entries()) {
+    const userRetries: Array<{ operation: string; attempts: number; maxRetries: number }> = [];
+    this.retryAttempts.forEach((attempts, key) => {
       if (key.startsWith(`${userId}_`)) {
         const operation = key.split('_').slice(1).join('_');
         userRetries.push({ operation, attempts, maxRetries: this.config.maxRetries || 3 });
       }
-    }
+    });
     return userRetries;
   }
 
   // Clear retry attempts for user
   clearRetryAttempts(userId: string): void {
-    for (const [key] of this.retryAttempts.entries()) {
+    this.retryAttempts.forEach((_, key) => {
       if (key.startsWith(`${userId}_`)) {
         this.retryAttempts.delete(key);
       }
-    }
+    });
   }
 
   // Enhanced retry logic
@@ -271,7 +271,7 @@ class ErrorHandlingService {
     } catch (error) {
       const processedError = transactionErrorHandler.processError(error, context);
       
-      if (transactionErrorHandler.isRetryable(processedError.type) && currentAttempts < maxRetries - 1) {
+      if (transactionErrorHandler.isRetryable(processedError.type as TransactionErrorType) && currentAttempts < maxRetries - 1) {
         const delay = this.config.retryDelay || 1000;
         this.retryAttempts.set(retryKey, currentAttempts + 1);
         

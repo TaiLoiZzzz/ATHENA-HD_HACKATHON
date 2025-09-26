@@ -226,7 +226,7 @@ export class TransactionErrorHandler {
 
   // Check if error is retryable
   isRetryable(errorType: TransactionErrorType): boolean {
-    const retryableTypes = [
+    const retryableTypes: TransactionErrorType[] = [
       TRANSACTION_ERROR_TYPES.DATABASE_CONNECTION,
       TRANSACTION_ERROR_TYPES.BLOCKCHAIN_FAILURE,
       TRANSACTION_ERROR_TYPES.TIMEOUT,
@@ -295,23 +295,23 @@ export class TransactionErrorHandler {
 
   // Get retry status for user
   getRetryStatus(userId: string): Array<{ operation: string; attempts: number; maxRetries: number }> {
-    const userRetries = [];
-    for (const [key, attempts] of this.retryAttempts.entries()) {
+    const userRetries: Array<{ operation: string; attempts: number; maxRetries: number }> = [];
+    this.retryAttempts.forEach((attempts, key) => {
       if (key.startsWith(`${userId}_`)) {
         const operation = key.split('_').slice(1).join('_');
         userRetries.push({ operation, attempts, maxRetries: this.maxRetries });
       }
-    }
+    });
     return userRetries;
   }
 
   // Clear retry attempts for user
   clearRetryAttempts(userId: string): void {
-    for (const [key] of this.retryAttempts.entries()) {
+    this.retryAttempts.forEach((_, key) => {
       if (key.startsWith(`${userId}_`)) {
         this.retryAttempts.delete(key);
       }
-    }
+    });
   }
 }
 

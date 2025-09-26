@@ -29,8 +29,16 @@ import SOVWallet from '@/components/SOVWallet/SOVWallet';
 import UserRankDisplay from '@/components/Ranking/UserRankDisplay';
 import TierBadge from '@/components/UserTier/TierBadge';
 
+// Type definitions
+interface NavigationItem {
+  name: string;
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+  submenu?: NavigationItem[];
+}
+
 // Navigation items
-const navigation = [
+const navigation: NavigationItem[] = [
   { 
     name: 'Dịch vụ', 
     href: '#', 
@@ -46,7 +54,7 @@ const navigation = [
 ];
 
 // User menu items
-const userNavigation = [
+const userNavigation: NavigationItem[] = [
   { name: 'Hồ sơ', href: '/profile', icon: UserIcon },
   { name: 'Giao dịch', href: '/transactions', icon: DocumentTextIcon },
   { name: 'Giỏ hàng', href: '/cart', icon: ShoppingCartIcon },
@@ -74,6 +82,20 @@ export default function Navbar({ className = '' }: NavbarProps) {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Handle click outside to close dropdowns
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('[data-dropdown]')) {
+        setShowServicesMenu(false);
+        setShowSOVWallet(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleLogout = async () => {
@@ -123,7 +145,7 @@ export default function Navbar({ className = '' }: NavbarProps) {
                       
                       if (hasSubmenu) {
                         return (
-                          <div key={item.name} className="relative">
+                          <div key={item.name} className="relative" data-dropdown>
                             <button
                               onClick={() => setShowServicesMenu(!showServicesMenu)}
                               className={clsx(
@@ -144,6 +166,7 @@ export default function Navbar({ className = '' }: NavbarProps) {
                                   animate={{ opacity: 1, scale: 1, y: 0 }}
                                   exit={{ opacity: 0, scale: 0.95, y: -10 }}
                                   className="absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50"
+                                  data-dropdown
                                 >
                                   {item.submenu?.map((subItem) => (
                                     <Link
@@ -219,7 +242,7 @@ export default function Navbar({ className = '' }: NavbarProps) {
                     </div>
 
                     {/* SOV Wallet Quick Access */}
-                    <div className="relative">
+                    <div className="relative" data-dropdown>
                       <button
                         onClick={() => setShowSOVWallet(!showSOVWallet)}
                         className="flex items-center space-x-2 px-3 py-2 bg-primary-50 text-primary-700 rounded-lg hover:bg-primary-100 transition-colors"
@@ -236,6 +259,7 @@ export default function Navbar({ className = '' }: NavbarProps) {
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: -10 }}
                             className="absolute right-0 z-50 mt-2 w-80 sm:w-96"
+                            data-dropdown
                           >
                             <div className="bg-white rounded-xl shadow-xl border border-gray-200 p-1">
                               <SOVWallet />

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
-import { TransactionError, TransactionResponse, transactionErrorHandler } from '@/utils/transactionErrorHandler';
+import { TransactionError, TransactionResponse, transactionErrorHandler, TransactionErrorType } from '@/utils/transactionErrorHandler';
 import toast from 'react-hot-toast';
 
 interface UseTransactionErrorOptions {
@@ -54,7 +54,7 @@ export function useTransactionError(options: UseTransactionErrorOptions = {}): U
     }
 
     // Auto retry for certain error types
-    if (autoRetry && transactionErrorHandler.isRetryable(error.type) && retryCount < maxRetries) {
+    if (autoRetry && transactionErrorHandler.isRetryable(error.type as TransactionErrorType) && retryCount < maxRetries) {
       setTimeout(() => {
         retry();
       }, 2000);

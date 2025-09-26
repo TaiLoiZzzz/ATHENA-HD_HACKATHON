@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import {
   CreditCardIcon,
@@ -152,10 +152,10 @@ export default function EnhancedPaymentForm({
     try {
       const result = await transaction.execute();
       
-      if (result.success) {
+      if (result.success && 'data' in result) {
         onSuccess?.(result.data);
         toast.success('Giao dịch thành công!');
-      } else {
+      } else if (!result.success && 'error' in result) {
         onError?.(result.error);
       }
     } catch (error) {

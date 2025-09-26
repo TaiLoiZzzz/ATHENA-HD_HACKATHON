@@ -78,7 +78,7 @@ class EnhancedApiService {
     } catch (error) {
       clearTimeout(timeoutId);
       
-      if (error.name === 'AbortError') {
+      if (error instanceof Error && error.name === 'AbortError') {
         const timeoutError = errorHandlingService.handleTimeoutError(`${method} ${endpoint}`, context);
         return {
           success: false,
@@ -87,7 +87,7 @@ class EnhancedApiService {
         };
       }
 
-      if (error.message.includes('fetch')) {
+      if (error instanceof Error && error.message.includes('fetch')) {
         const networkError = errorHandlingService.handleNetworkError(error, context);
         return {
           success: false,
@@ -292,7 +292,7 @@ class EnhancedApiService {
       const successful = results
         .filter((result): result is PromiseFulfilledResult<ApiResponse<T>> => result.status === 'fulfilled')
         .map(result => result.value.data)
-        .filter(Boolean);
+        .filter((item): item is T => item !== undefined && item !== null);
 
       const failed = results
         .filter((result): result is PromiseRejectedResult => result.status === 'rejected')
@@ -387,8 +387,7 @@ export const enhancedApiService = new EnhancedApiService();
 export const createApiContext = (userId?: string, operation?: string, serviceType?: string): ErrorContext => ({
   userId,
   operation,
-  serviceType,
-  timestamp: new Date().toISOString()
+  serviceType
 });
 
 export const handleApiResponse = <T>(response: ApiResponse<T>): T | null => {
