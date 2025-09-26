@@ -22,6 +22,7 @@ import {
   BuildingStorefrontIcon,
   HomeIcon,
   ChevronDownIcon,
+  GiftIcon,
 } from '@heroicons/react/24/outline';
 import { useAuth } from '@/contexts/AuthContext';
 import { clsx } from 'clsx';
@@ -50,6 +51,7 @@ const navigation: NavigationItem[] = [
       { name: 'Sovico', href: '/sovico', icon: SparklesIcon },
     ]
   },
+  { name: 'Voucher Vault', href: '/voucher-vault', icon: GiftIcon },
   { name: 'AI Dashboard', href: '/ai-dashboard', icon: SparklesIcon },
 ];
 
@@ -131,7 +133,7 @@ export default function Navbar({ className = '' }: NavbarProps) {
                       />
                     </div>
                     <span className="text-lg sm:text-xl font-bold text-gray-900 hidden sm:block">
-                      ATHENA HD
+                      ATHENA 
                     </span>
                   </Link>
                 </div>

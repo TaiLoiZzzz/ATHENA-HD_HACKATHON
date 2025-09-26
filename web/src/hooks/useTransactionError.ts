@@ -24,6 +24,7 @@ interface UseTransactionErrorReturn {
   clearError: () => void;
   showError: (error: TransactionError) => void;
   hideError: () => void;
+  onAddFunds?: () => void;
 }
 
 export function useTransactionError(options: UseTransactionErrorOptions = {}): UseTransactionErrorReturn {
@@ -143,7 +144,8 @@ export function useTransactionError(options: UseTransactionErrorOptions = {}): U
     retry,
     clearError,
     showError,
-    hideError
+    hideError,
+    onAddFunds: handleAddFunds
   };
 }
 
