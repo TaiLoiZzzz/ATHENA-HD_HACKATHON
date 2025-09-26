@@ -115,9 +115,18 @@ const VikkibankDashboard: React.FC<VikkibankDashboardProps> = ({ className = '' 
     <div className={`space-y-6 ${className}`}>
       {/* Header */}
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">
-          Vikkibank Digital Banking
-        </h2>
+        <div className="flex items-center justify-center mb-4">
+          <div className="bg-green-50 rounded-2xl p-4 shadow-lg mr-6">
+            <img 
+              src="/VikkiBank.jpg" 
+              alt="Vikkibank Logo" 
+              className="h-20 w-20 object-contain"
+            />
+          </div>
+          <h2 className="text-4xl font-bold text-gray-900">
+            Vikkibank Digital Banking
+          </h2>
+        </div>
         <p className="text-gray-600">
           Smart digital banking with SOV token integration
         </p>
@@ -269,9 +278,18 @@ const VikkibankDashboard: React.FC<VikkibankDashboardProps> = ({ className = '' 
               className="bg-white rounded-xl shadow-sm p-6 border border-gray-200 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between mb-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900">{product.name}</h3>
-                  <p className="text-sm text-gray-600 mt-1">{product.description}</p>
+                <div className="flex items-start space-x-3">
+                  <div className="bg-green-50 rounded-lg p-2 mt-1">
+                    <img 
+                      src="/VikkiBank.jpg" 
+                      alt="Vikkibank" 
+                      className="h-10 w-10 object-contain"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">{product.name}</h3>
+                    <p className="text-sm text-gray-600 mt-1">{product.description}</p>
+                  </div>
                 </div>
                 <div className="text-right">
                   <div className="text-lg font-bold text-blue-600">
@@ -308,7 +326,7 @@ const VikkibankDashboard: React.FC<VikkibankDashboardProps> = ({ className = '' 
               </div>
 
               <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2">
-                <span>Đăng ký</span>
+                <span>  join</span>
                 <ArrowRightIcon className="w-4 h-4" />
               </button>
             </motion.div>
@@ -332,9 +350,18 @@ const VikkibankDashboard: React.FC<VikkibankDashboardProps> = ({ className = '' 
               className="bg-white rounded-xl shadow-sm p-6 border border-gray-200 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between mb-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900">{service.name}</h3>
-                  <p className="text-sm text-gray-600 mt-1">{service.description}</p>
+                <div className="flex items-start space-x-3">
+                  <div className="bg-green-50 rounded-lg p-2 mt-1">
+                    <img 
+                      src="/VikkiBank.jpg" 
+                      alt="Vikkibank" 
+                      className="h-10 w-10 object-contain"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">{service.name}</h3>
+                    <p className="text-sm text-gray-600 mt-1">{service.description}</p>
+                  </div>
                 </div>
                 <div className="text-right">
                   <div className="text-lg font-bold text-green-600">
@@ -369,7 +396,7 @@ const VikkibankDashboard: React.FC<VikkibankDashboardProps> = ({ className = '' 
               </div>
 
               <button className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center space-x-2">
-                <span>Sử dụng</span>
+                <span>Use</span>
                 <ArrowRightIcon className="w-4 h-4" />
               </button>
             </motion.div>

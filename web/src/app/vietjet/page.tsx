@@ -396,7 +396,14 @@ export default function VietjetBooking() {
       >
       <div className="flex justify-between items-start mb-4">
         <div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
+            <div className="bg-blue-50 rounded-lg p-2">
+              <img 
+                src="/VietJet_Air-Logo.wine.png" 
+                alt="VietJet Air" 
+                className="h-8 w-8 object-contain"
+              />
+            </div>
             <h3 className="text-lg font-bold text-gray-900">{flight.flightNumber}</h3>
             {isSelected && (
               <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full">
@@ -676,9 +683,18 @@ export default function VietjetBooking() {
         <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-3xl font-bold">VietJet Air Booking</h1>
-                <p className="mt-2 text-blue-100">Book your flight and earn SOV tokens</p>
+              <div className="flex items-center space-x-6">
+                <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
+                  <img 
+                    src="/VietJet_Air-Logo.wine.png" 
+                    alt="VietJet Air Logo" 
+                    className="h-20 w-20 object-contain"
+                  />
+                </div>
+                <div>
+                  <h1 className="text-4xl font-bold">VietJet Air Booking</h1>
+                  <p className="mt-2 text-blue-100 text-lg">Book your flight and earn SOV tokens</p>
+                </div>
               </div>
               <div className="hidden lg:block">
                 <button

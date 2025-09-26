@@ -97,7 +97,7 @@ export default function Footer() {
               <div className="space-y-3 text-sm text-gray-300">
                 <div className="flex items-center space-x-3">
                   <MapPinIcon className="w-4 h-4 text-primary-400" />
-                  <span>123 Nguyen Hue Street, District 1, Ho Chi Minh City</span>
+                  <span>Phòng 1101, tòa nhà Pacific Place, 83B Lý Thường Kiệt, Phường Cửa Nam (hoặc Trần Hưng Đạo), Quận Hoàn Kiếm, Thành phố Hà Nội, Việt Nam</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <PhoneIcon className="w-4 h-4 text-primary-400" />

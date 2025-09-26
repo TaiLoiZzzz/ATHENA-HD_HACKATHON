@@ -23,7 +23,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 export default function AIDashboard() {
-  const [activeTab, setActiveTab] = useState<'personalization' | 'sales' | 'insights'>('personalization');
+  const [activeTab, setActiveTab] = useState<'personalization' | 'sales'>('personalization');
   const [userProfile, setUserProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -65,12 +65,6 @@ export default function AIDashboard() {
       name: 'AI Sales Assistant',
       icon: ChatBubbleLeftRightIcon,
       description: 'Trò chuyện với AI Sales chuyên nghiệp'
-    },
-    {
-      id: 'insights',
-      name: 'AI Insights',
-      icon: ChartBarIcon,
-      description: 'Phân tích và dự đoán thông minh'
     }
   ];
 
@@ -95,9 +89,15 @@ export default function AIDashboard() {
               animate={{ opacity: 1, y: 0 }}
               className="text-center"
             >
-              <div className="flex items-center justify-center space-x-3 mb-4">
-                <CpuChipIcon className="w-12 h-12" />
-                <h1 className="text-4xl font-bold">AI Dashboard</h1>
+              <div className="flex items-center justify-center space-x-4 mb-4">
+                <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
+                  <img 
+                    src="/LOGO CHÍNh của web.jpg" 
+                    alt="ATHENA HD Logo" 
+                    className="w-16 h-16 object-contain"
+                  />
+                </div>
+                <h1 className="text-5xl font-bold">AI Dashboard</h1>
               </div>
               <p className="text-xl text-purple-100">
                 Trí tuệ nhân tạo siêu cá nhân hóa cho rank {userProfile?.rank}
@@ -225,56 +225,6 @@ export default function AIDashboard() {
               </div>
             )}
 
-            {/* AI Insights */}
-            {activeTab === 'insights' && (
-              <div className="lg:col-span-2">
-                <div className="bg-white rounded-xl shadow-lg p-6">
-                  <div className="flex items-center space-x-3 mb-6">
-                    <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-                      <ChartBarIcon className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900">AI Insights</h3>
-                      <p className="text-sm text-gray-600">Phân tích thông minh và dự đoán</p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4">
-                      <h4 className="font-semibold text-gray-900 mb-2">Xu hướng thị trường</h4>
-                      <p className="text-sm text-gray-700">
-                        Dựa trên phân tích AI, thị trường đang có xu hướng tăng mạnh về du lịch và banking. 
-                        Rank {userProfile?.rank} của bạn có thể tận dụng tối đa cơ hội này.
-                      </p>
-                    </div>
-
-                    <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4">
-                      <h4 className="font-semibold text-gray-900 mb-2">Dự đoán token</h4>
-                      <p className="text-sm text-gray-700">
-                        AI dự đoán bạn có thể kiếm thêm 2,500 SOV tokens trong tháng tới nếu tối ưu hóa 
-                        các giao dịch theo lời khuyên của AI.
-                      </p>
-                    </div>
-
-                    <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-4">
-                      <h4 className="font-semibold text-gray-900 mb-2">Cơ hội vàng</h4>
-                      <p className="text-sm text-gray-700">
-                        Có 3 sản phẩm đang có chương trình khuyến mãi đặc biệt cho rank {userProfile?.rank}. 
-                        AI khuyên bạn nên hành động sớm để tận dụng tối đa lợi ích.
-                      </p>
-                    </div>
-
-                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
-                      <h4 className="font-semibold text-gray-900 mb-2">Tối ưu hóa</h4>
-                      <p className="text-sm text-gray-700">
-                        AI đã phân tích lịch sử giao dịch của bạn và tìm ra 5 cách để tối ưu hóa 
-                        token earnings với rank {userProfile?.rank}.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
           </motion.div>
 
           {/* AI Features */}
@@ -306,7 +256,7 @@ export default function AIDashboard() {
                 <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center mb-4">
                   <ChatBubbleLeftRightIcon className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Sales Assistant</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Trợ lý bán hàng</h3>
                 <p className="text-sm text-gray-600">
                   AI đóng vai sales chuyên nghiệp, tư vấn và khuyên người dùng mua sản phẩm phù hợp
                 </p>

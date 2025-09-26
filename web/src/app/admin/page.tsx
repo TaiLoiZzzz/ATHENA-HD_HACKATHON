@@ -148,8 +148,14 @@ export default function AdminDashboard() {
 
                 <div className="bg-white p-6 rounded-lg shadow">
                   <div className="flex items-center">
-                    <CreditCardIcon className="w-8 h-8 text-green-600" />
-                    <div className="ml-4">
+                    <div className="bg-blue-50 rounded-lg p-2 mr-4">
+                      <img 
+                        src="/logo-hd-bank-file-vector-02.jpg" 
+                        alt="HD Bank" 
+                        className="w-8 h-8 object-contain"
+                      />
+                    </div>
+                    <div>
                       <p className="text-sm font-medium text-gray-600">HDBank Products</p>
                       <p className="text-2xl font-bold text-gray-900">{stats.totalProducts}</p>
                     </div>
@@ -158,8 +164,14 @@ export default function AdminDashboard() {
 
                 <div className="bg-white p-6 rounded-lg shadow">
                   <div className="flex items-center">
-                    <PaperAirplaneIcon className="w-8 h-8 text-orange-600" />
-                    <div className="ml-4">
+                    <div className="bg-blue-50 rounded-lg p-2 mr-4">
+                      <img 
+                        src="/VietJet_Air-Logo.wine.png" 
+                        alt="VietJet Air" 
+                        className="w-8 h-8 object-contain"
+                      />
+                    </div>
+                    <div>
                       <p className="text-sm font-medium text-gray-600">Vietjet Flights</p>
                       <p className="text-2xl font-bold text-gray-900">{stats.totalFlights}</p>
                     </div>
@@ -168,8 +180,14 @@ export default function AdminDashboard() {
 
                 <div className="bg-white p-6 rounded-lg shadow">
                   <div className="flex items-center">
-                    <SparklesIcon className="w-8 h-8 text-purple-600" />
-                    <div className="ml-4">
+                    <div className="bg-green-50 rounded-lg p-2 mr-4">
+                      <img 
+                        src="/VikkiBank.jpg" 
+                        alt="Vikkibank" 
+                        className="w-8 h-8 object-contain"
+                      />
+                    </div>
+                    <div>
                       <p className="text-sm font-medium text-gray-600">Sovico Services</p>
                       <p className="text-2xl font-bold text-gray-900">{stats.totalServices}</p>
                     </div>

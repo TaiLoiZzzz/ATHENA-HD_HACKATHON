@@ -380,7 +380,13 @@ export default function VietjetManagement({ onClose }: VietjetManagementProps) {
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 flex items-center">
-            <PaperAirplaneIcon className="w-8 h-8 mr-3 text-green-600" />
+            <div className="bg-blue-50 rounded-lg p-2 mr-3">
+              <img 
+                src="/VietJet_Air-Logo.wine.png" 
+                alt="VietJet Air" 
+                className="w-8 h-8 object-contain"
+              />
+            </div>
             Quản lý chuyến bay Vietjet
           </h2>
           <p className="text-gray-600 mt-2">Thêm, sửa, xóa các chuyến bay</p>
@@ -446,7 +452,13 @@ export default function VietjetManagement({ onClose }: VietjetManagementProps) {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-4">
                       <div className="flex items-center space-x-2">
-                        <PaperAirplaneIcon className="w-5 h-5 text-green-600" />
+                        <div className="bg-blue-50 rounded-lg p-1">
+                          <img 
+                            src="/VietJet_Air-Logo.wine.png" 
+                            alt="VietJet Air" 
+                            className="w-5 h-5 object-contain"
+                          />
+                        </div>
                         <span className="font-bold text-lg text-gray-900">{flight.flight_number}</span>
                       </div>
                       <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">

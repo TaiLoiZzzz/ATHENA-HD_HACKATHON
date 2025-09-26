@@ -301,7 +301,13 @@ export default function HDBankManagement({ onClose }: HDBankManagementProps) {
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 flex items-center">
-            <CreditCardIcon className="w-8 h-8 mr-3 text-blue-600" />
+            <div className="bg-blue-50 rounded-lg p-2 mr-3">
+              <img 
+                src="/logo-hd-bank-file-vector-02.jpg" 
+                alt="HD Bank" 
+                className="w-8 h-8 object-contain"
+              />
+            </div>
             Quản lý sản phẩm HDBank
           </h2>
           <p className="text-gray-600 mt-2">Thêm, sửa, xóa các sản phẩm ngân hàng</p>
@@ -366,6 +372,13 @@ export default function HDBankManagement({ onClose }: HDBankManagementProps) {
               <div className="p-6 pb-4">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center space-x-3">
+                    <div className="bg-blue-50 rounded-lg p-2">
+                      <img 
+                        src="/logo-hd-bank-file-vector-02.jpg" 
+                        alt="HD Bank" 
+                        className="w-5 h-5 object-contain"
+                      />
+                    </div>
                     <div className={`p-2 rounded-lg ${getTypeColor(product.type)}`}>
                       <IconComponent className="w-5 h-5" />
                     </div>

@@ -258,8 +258,14 @@ export default function HDBankPage() {
           className="text-center mb-8"
         >
           <div className="flex items-center justify-center mb-4">
-            <BanknotesIcon className="h-12 w-12 text-blue-600 mr-3" />
-            <h1 className="text-4xl font-bold text-gray-900">HDBank Services</h1>
+            <div className="bg-blue-50 rounded-2xl p-4 shadow-lg mr-6">
+              <img 
+                src="/logo-hd-bank-file-vector-02.jpg" 
+                alt="HD Bank Logo" 
+                className="h-20 w-20 object-contain"
+              />
+            </div>
+            <h1 className="text-5xl font-bold text-gray-900">HDBank Services</h1>
           </div>
           <p className="text-gray-600">Comprehensive banking and financial services with SOV token integration</p>
         </motion.div>
@@ -360,7 +366,16 @@ export default function HDBankPage() {
                     className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
                   >
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-xl font-bold text-gray-900">{product.name}</h3>
+                      <div className="flex items-center space-x-3">
+                        <div className="bg-blue-50 rounded-lg p-2">
+                          <img 
+                            src="/logo-hd-bank-file-vector-02.jpg" 
+                            alt="HD Bank" 
+                            className="h-10 w-10 object-contain"
+                          />
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-900">{product.name}</h3>
+                      </div>
                       {product.userTier === 'prime' && (
                         <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-xs font-medium">
                           Prime
